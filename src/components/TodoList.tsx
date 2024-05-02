@@ -30,6 +30,7 @@ import { pauseTodo } from "@/actions/pause-todo";
 import TimeElapsed from "./TimeElasped";
 import EditTodoModal from "./EditTodoModal";
 import { EditIcon } from "./icons/EditIcon";
+import { switchTodoOrder } from "@/actions/switch-todo-order";
 
 interface TodoWithChildren extends Todo {
   children: Todo[];
@@ -113,10 +114,10 @@ export default function TodoList({ todos }: { todos: TodoWithChildren[] }) {
               onDragOver={(e) => {
                 e.preventDefault();
               }}
-              onDrop={(e) => {
+              onDrop={async (e) => {
                 e.preventDefault();
                 const draggingId = e.dataTransfer.getData("dragged-todo-id");
-                console.log("dropped", draggingId, item.id);
+                await switchTodoOrder(draggingId, item.id);
               }}
             >
               {(columnKey) => (
