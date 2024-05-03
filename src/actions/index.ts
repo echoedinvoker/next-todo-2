@@ -1,2 +1,11 @@
 export { addTodo } from "./add-todo";
 export { deleteTodo } from "./delete-todo";
+export { completeTodo } from "./complete-todo";
+export { pauseTodo } from "./pause-todo";
+export { playTodo } from "./play-todo";
+export { backTodo } from "./back-todo";
+export { editTodo } from "./edit-todo";
+export { signIn } from "./sign-in";
+export { signOut } from "./sign-out";
+export { switchTodoOrder } from "./switch-todo-order";
+export { updateParent } from "./update-parent";
