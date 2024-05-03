@@ -7,21 +7,13 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Chip,
   useDisclosure,
 } from "@nextui-org/react";
-import { Key, useCallback, useState } from "react";
-import AddTodoModal from "./AddTodoModal";
-import { Todo } from "@prisma/client";
-import TimeElapsed from "./TimeElasped";
+import { Key, useState } from "react";
+import { AddTodoModal, RenderCell } from "@/components"
+import { TodoWithChildren } from "@/types";
 import { switchTodoOrder } from "@/actions/switch-todo-order";
-import { timeFormatter } from "@/helpers/time-formatter";
-import TodoActions from "./TodoActions";
-import RenderCell from "./RenderCell";
 
-interface TodoWithChildren extends Todo {
-  children: Todo[];
-}
 
 export default function TodoList({ todos }: { todos: TodoWithChildren[] }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
