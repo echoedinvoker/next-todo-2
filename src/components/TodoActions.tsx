@@ -17,12 +17,14 @@ import { TodoActionsProps } from "@/types";
 import TooltipIconButton from "./TooltipIconButton";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import AddTodoModal from "./AddTodoModal";
 
-export default function TodoActions({ todo, handleAddTodo }: TodoActionsProps) {
+export default function TodoActions({ todo }: TodoActionsProps) {
   const [_1, actionComplete] = useFormState(completeTodo, { message: "" });
   const [_2, actionPlay] = useFormState(playTodo, { message: "" });
   const [_3, actionPause] = useFormState(pauseTodo, { message: "" });
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen: isOpenAdd, onOpen: onOpenAdd, onOpenChange: onOpenChangeAdd } = useDisclosure();
   const session = useSession();
   const { idx } = useParams();
   const link = `/user/${session.data?.user?.id}/todos${idx ? `/${(idx as string[]).join("/")}` : ""}`;
@@ -32,7 +34,7 @@ export default function TodoActions({ todo, handleAddTodo }: TodoActionsProps) {
       {todo.children.length === 0 && todo.status !== "in-progress" && (
         <TooltipIconButton
           content="Add child todo"
-          onPress={() => handleAddTodo(todo.id)}
+          onPress={onOpenAdd}
         >
           <AddIcon />
         </TooltipIconButton>
@@ -82,6 +84,7 @@ export default function TodoActions({ todo, handleAddTodo }: TodoActionsProps) {
         <DeleteIcon />
       </TooltipIconButton>
       <EditTodoModal isOpen={isOpen} onOpenChange={onOpenChange} todo={todo} />
+      <AddTodoModal isOpen={isOpenAdd} onOpenChange={onOpenChangeAdd} {...{ parentId: todo.id }} />
     </div>
   );
 }

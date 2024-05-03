@@ -15,26 +15,27 @@ import { TodoWithChildren } from "@/types";
 import { switchTodoOrder } from "@/actions/switch-todo-order";
 
 
+const headers = [
+  { key: "title", label: "Title" },
+  { key: "status", label: "Status" },
+  { key: "actions", label: "Actions" },
+  { key: "children", label: "Entries" },
+  { key: "duration", label: "Duration" },
+  { key: "timeSpent", label: "Elapsed" },
+];
+
+
 export default function TodoList({ todos }: { todos: TodoWithChildren[] }) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [parentId, setParentId] = useState(0);
   const sortedTodos = todos.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-
-  const handleAddTodo = (parentId: number) => {
-    setParentId(parentId);
-    onOpen();
-  };
 
   return (
     <>
       <Table aria-label="Todos">
         <TableHeader>
-          <TableColumn key="title">Title</TableColumn>
-          <TableColumn key="status">Status</TableColumn>
-          <TableColumn key="actions">Actions</TableColumn>
-          <TableColumn key="children">Entries</TableColumn>
-          <TableColumn key="duration">Duration</TableColumn>
-          <TableColumn key="timeSpent">Elapsed</TableColumn>
+          {headers.map((header) => (
+            <TableColumn key={header.key}>{header.label}</TableColumn>
+          ))}
         </TableHeader>
         <TableBody items={sortedTodos}>
           {(item) => (
@@ -59,7 +60,6 @@ export default function TodoList({ todos }: { todos: TodoWithChildren[] }) {
                   <RenderCell
                     item={item}
                     columnKey={columnKey as Key}
-                    handleAddTodo={handleAddTodo}
                   />
                 </TableCell>
               )}
@@ -67,11 +67,6 @@ export default function TodoList({ todos }: { todos: TodoWithChildren[] }) {
           )}
         </TableBody>
       </Table>
-      <AddTodoModal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        {...{ parentId }}
-      />
     </>
   );
 }

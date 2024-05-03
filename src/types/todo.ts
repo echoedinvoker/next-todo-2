@@ -6,5 +6,4 @@ export interface TodoWithChildren extends Todo {
 
 export interface TodoActionsProps {
   todo: TodoWithChildren;
-  handleAddTodo: any;
 }

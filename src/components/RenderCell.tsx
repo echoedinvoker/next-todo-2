@@ -10,10 +10,9 @@ import { timeFormatter } from "@/helpers/time-formatter";
 interface RenderCellProps {
   item: TodoWithChildren;
   columnKey: Key;
-  handleAddTodo: any;
 }
 
-export default function RenderCell({ item, columnKey, handleAddTodo }: RenderCellProps) {
+export default function RenderCell({ item, columnKey }: RenderCellProps) {
   const renderCell = useCallback((todo: TodoWithChildren, columnKey: Key) => {
       const cellValue = todo[columnKey as keyof Todo];
 
@@ -33,7 +32,7 @@ export default function RenderCell({ item, columnKey, handleAddTodo }: RenderCel
         case "duration":
           return todo.duration ? timeFormatter({ minutes: todo.duration }) : "N/A";
         case "actions":
-          return <TodoActions todo={todo} handleAddTodo={handleAddTodo} />;
+          return <TodoActions todo={todo} />;
         case "timeSpent":
           return <TimeElapsed todo={todo} />;
         case "children":
@@ -49,7 +48,7 @@ export default function RenderCell({ item, columnKey, handleAddTodo }: RenderCel
           return cellValue;
       }
     },
-    [handleAddTodo],
+    [],
   );
   return <>{renderCell(item, columnKey)}</>;
 }
