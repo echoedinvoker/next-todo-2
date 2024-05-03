@@ -10,10 +10,12 @@ import {
   ModalFooter,
   Button,
 } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
 import { useFormState } from "react-dom";
 
 export default function AddTodoModal({ isOpen, onOpenChange, parentId }: any) {
   const [_, action] = useFormState(addTodo, null as any);
+  const session = useSession();
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
@@ -46,6 +48,7 @@ export default function AddTodoModal({ isOpen, onOpenChange, parentId }: any) {
                 type="number"
               />
               <input name="parentId" type="hidden" value={parentId} />
+              <input name="userId" type="hidden" value={session.data?.user?.id} />
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="flat" onPress={onClose}>
