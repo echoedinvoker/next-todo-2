@@ -10,7 +10,7 @@ if (!GITHUB_CLIENT_ID || !GITHUB_CLIENT_SECRET) {
   throw new Error("Github credentials are missing");
 }
 
-NextAuth({
+export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(db),
   providers: [
     GitHub({
@@ -18,4 +18,13 @@ NextAuth({
       clientSecret: GITHUB_CLIENT_SECRET,
     }),
   ],
+  callbacks: {
+    async session({ session, user }: any) {
+      if (session && user) {
+        session.user.id = user.id;
+      }
+
+      return session;
+    },
+  },
 });
