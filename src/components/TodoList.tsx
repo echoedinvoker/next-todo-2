@@ -17,6 +17,7 @@ import TimeElapsed from "./TimeElasped";
 import { switchTodoOrder } from "@/actions/switch-todo-order";
 import { timeFormatter } from "@/helpers/time-formatter";
 import TodoActions from "./TodoActions";
+import RenderCell from "./RenderCell";
 
 interface TodoWithChildren extends Todo {
   children: Todo[];
@@ -32,44 +33,6 @@ export default function TodoList({ todos }: { todos: TodoWithChildren[] }) {
     onOpen();
   };
 
-  const renderCell = useCallback(
-    (todo: TodoWithChildren, columnKey: Key) => {
-      const cellValue = todo[columnKey as keyof Todo];
-
-      switch (columnKey) {
-        case "title":
-          return cellValue;
-        case "status":
-          return (
-            <Chip
-              className="uppercase font-black text-xs"
-              size="md"
-              variant="flat"
-            >
-              {cellValue as string}
-            </Chip>
-          );
-        case "duration":
-          return todo.duration ? timeFormatter({ minutes: todo.duration }) : "N/A";
-        case "actions":
-          return <TodoActions todo={todo} handleAddTodo={handleAddTodo} />;
-        case "timeSpent":
-          return <TimeElapsed todo={todo} />;
-        case "children":
-          if (todo.children.length > 0) {
-            const completed = todo.children.filter(
-              (child) => child.status === "completed",
-            ).length;
-            return `${completed}/${todo.children.length}`;
-          }
-          return "N/A";
-
-        default:
-          return cellValue;
-      }
-    },
-    [handleAddTodo],
-  );
   return (
     <>
       <Table aria-label="Todos">
@@ -100,7 +63,13 @@ export default function TodoList({ todos }: { todos: TodoWithChildren[] }) {
               }}
             >
               {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey) as any}</TableCell>
+                <TableCell>
+                  <RenderCell
+                    item={item}
+                    columnKey={columnKey as Key}
+                    handleAddTodo={handleAddTodo}
+                  />
+                </TableCell>
               )}
             </TableRow>
           )}
