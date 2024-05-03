@@ -33,10 +33,10 @@ export async function addTodo(formState: null, formData: FormData) {
 
   if (parentId) {
     await updateParent({ parentId: Number(parentId) });
-    revalidatePath(`/todo/${parentId}`);
-    redirect(`/todo/${parentId}`);
+    revalidatePath(`/user/${userId}/todos/${parentId}`);
+    redirect(`/user/${userId}/todos/${parentId}`);
   }
 
-  revalidatePath(`/todo`);
-  redirect(`/todo`);
+  revalidatePath(`/user/${userId}/todos`);
+  redirect(`/user/${userId}/todos`);
 }
