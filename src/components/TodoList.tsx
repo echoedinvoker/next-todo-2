@@ -31,16 +31,10 @@ import TimeElapsed from "./TimeElasped";
 import EditTodoModal from "./EditTodoModal";
 import { EditIcon } from "./icons/EditIcon";
 import { switchTodoOrder } from "@/actions/switch-todo-order";
+import { timeFormatter } from "@/helpers/time-formatter";
 
 interface TodoWithChildren extends Todo {
   children: Todo[];
-}
-
-function timeFormatter(minutes: number) {
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
-
-  return `${hours ? `${hours}h ` : ""}${remainingMinutes ? `${remainingMinutes}m ` : ""}`;
 }
 
 export default function TodoList({ todos }: { todos: TodoWithChildren[] }) {
@@ -71,7 +65,7 @@ export default function TodoList({ todos }: { todos: TodoWithChildren[] }) {
             </Chip>
           );
         case "duration":
-          return todo.duration ? timeFormatter(todo.duration) : "N/A";
+          return todo.duration ? timeFormatter({ minutes: todo.duration }) : "N/A";
         case "actions":
           return <TodoActions todo={todo} handleAddTodo={handleAddTodo} />;
         case "timeSpent":
