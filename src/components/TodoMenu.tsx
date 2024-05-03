@@ -9,7 +9,8 @@ import { backTodo } from "@/actions/back-todo";
 export default function TodoMenu() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [formState, action] = useFormState(backTodo, { message: "" });
-  const { id } = useParams();
+  const { ids } = useParams();
+  const parentId = ids ? ids.at(-1) : null;
 
   return (
     <>
@@ -23,14 +24,14 @@ export default function TodoMenu() {
         <RegularButton onPress={onOpen}>New</RegularButton>
         <RegularButton
           action={action}
-          actionData={[{ name: "id", value: id ? id.toString() : "" }]}
-          isDisabled={!id}
+          actionData={[{ name: "id", value: parentId ? parentId.toString() : "" }]}
+          isDisabled={!parentId}
         >
           BACK
         </RegularButton>
       </div>
 
-      <AddTodoModal isOpen={isOpen} onOpenChange={onOpenChange} parentId={id} />
+      <AddTodoModal isOpen={isOpen} onOpenChange={onOpenChange} parentId={parentId} />
     </>
   );
 }

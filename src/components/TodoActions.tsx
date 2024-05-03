@@ -26,8 +26,8 @@ export default function TodoActions({ todo }: TodoActionsProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { isOpen: isOpenAdd, onOpen: onOpenAdd, onOpenChange: onOpenChangeAdd } = useDisclosure();
   const session = useSession();
-  const { idx } = useParams();
-  const link = `/user/${session.data?.user?.id}/todos${idx ? `/${(idx as string[]).join("/")}` : ""}`;
+  const { ids } = useParams();
+  const link = `/user/${session.data?.user?.id}/todos${ids ? `/${(ids as string[]).join("/")}` : ""}`;
 
   return (
     <div className="flex gap-2">
@@ -84,7 +84,7 @@ export default function TodoActions({ todo }: TodoActionsProps) {
         <DeleteIcon />
       </TooltipIconButton>
       <EditTodoModal isOpen={isOpen} onOpenChange={onOpenChange} todo={todo} />
-      <AddTodoModal isOpen={isOpenAdd} onOpenChange={onOpenChangeAdd} {...{ parentId: todo.id }} />
+      <AddTodoModal isOpen={isOpenAdd} onOpenChange={onOpenChangeAdd} parentId={todo.id} />
     </div>
   );
 }
