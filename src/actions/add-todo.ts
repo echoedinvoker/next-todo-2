@@ -4,12 +4,14 @@ import { db } from "@/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { updateParent } from "./update-parent";
+import { auth } from "@/auth";
 
 export async function addTodo(formState: null, formData: FormData) {
+  const session = await auth();
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
 
-  const data: any = { title, description };
+  const data: any = { title, description, userId: session?.user?.id };
 
   const parentId = formData.get("parentId");
   if (parentId) {
