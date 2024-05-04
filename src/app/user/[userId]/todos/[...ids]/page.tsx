@@ -8,9 +8,5 @@ export default async function TodoListPage({ params }: { params: { ids: string[]
     include: { children: true },
   });
 
-  return (
-    <div className="flex flex-col justify-center py-2 gap-2">
-      <TodoList todos={todos} />
-    </div>
-  );
+  return <TodoList todos={todos} />;
 }

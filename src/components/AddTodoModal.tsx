@@ -13,7 +13,15 @@ import {
 import { useSession } from "next-auth/react";
 import { useFormState } from "react-dom";
 
-export default function AddTodoModal({ isOpen, onOpenChange, parentId }: any) {
+export default function AddTodoModal({
+  isOpen,
+  onOpenChange,
+  parentId,
+}: {
+  isOpen: boolean;
+  onOpenChange: any;
+  parentId: number;
+}) {
   const [_, action] = useFormState(addTodo, null as any);
   const session = useSession();
 
@@ -47,8 +55,12 @@ export default function AddTodoModal({ isOpen, onOpenChange, parentId }: any) {
                 variant="bordered"
                 type="number"
               />
-              <input name="parentId" type="hidden" value={parentId} />
-              <input name="userId" type="hidden" value={session.data?.user?.id} />
+              {parentId && <input name="parentId" type="hidden" value={parentId} />}
+              <input
+                name="userId"
+                type="hidden"
+                value={session.data?.user?.id}
+              />
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="flat" onPress={onClose}>
