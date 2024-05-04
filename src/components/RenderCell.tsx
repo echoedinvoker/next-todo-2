@@ -22,9 +22,9 @@ export default function RenderCell({ item, columnKey }: RenderCellProps) {
         case "status":
           return (
             <Chip
-              className="uppercase font-black text-xs"
-              size="md"
-              variant="flat"
+              className="border-default text-default-500 uppercase"
+              color="primary"
+              variant="faded"
             >
               {cellValue as string}
             </Chip>

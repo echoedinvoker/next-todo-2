@@ -7,3 +7,4 @@ export { EditIcon } from "./EditIcon";
 export { DeleteIcon } from "./DeleteIcon";
 export { AcmeLogo } from "./AcmeLogo";
 export { PlusIcon } from "./PlusIcon";
+export { CheckIcon } from "./CheckIcon";

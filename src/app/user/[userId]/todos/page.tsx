@@ -15,7 +15,7 @@ export default async function TodoListPage() {
     <div className="flex flex-col justify-center py-2 gap-2">
       <div className="flex gap-2 items-center">
         <TodoMenu />
-      <Breads userId={session?.user?.id ?? ""} ids={[]} />
+        <Breads userId={session?.user?.id ?? ""} ids={[]} />
       </div>
       <TodoList todos={todos} />
     </div>

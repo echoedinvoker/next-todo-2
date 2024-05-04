@@ -8,4 +8,4 @@ export { default as TodoMenu } from './TodoMenu';
 export { default as TooltipIconButton } from './TooltipIconButton';
 export { default as RegularButton } from './RegularButton';
 export { default as AuthMenu } from './AuthMenu';
-
+export { default as CustomCheckbox } from './CustomCheckbox';
