@@ -24,21 +24,24 @@ export default function TodoActions({ todo }: TodoActionsProps) {
   const [_2, actionPlay] = useFormState(playTodo, { message: "" });
   const [_3, actionPause] = useFormState(pauseTodo, { message: "" });
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { isOpen: isOpenAdd, onOpen: onOpenAdd, onOpenChange: onOpenChangeAdd } = useDisclosure();
+  const {
+    isOpen: isOpenAdd,
+    onOpen: onOpenAdd,
+    onOpenChange: onOpenChangeAdd,
+  } = useDisclosure();
   const session = useSession();
   const { userId, ids } = useParams();
   const link = `/user/${session.data?.user?.id}/todos${ids ? `/${(ids as string[]).join("/")}` : ""}`;
 
   return (
     <div className="flex gap-2">
-      {todo.children.length === 0 && todo.status !== "in-progress" && (
-        <TooltipIconButton
-          content="Add child todo"
-          onPress={onOpenAdd}
-        >
-          <AddIcon />
-        </TooltipIconButton>
-      )}
+      {todo.children.length === 0 &&
+        todo.status !== "in-progress" &&
+        todo.status !== "completed" && (
+          <TooltipIconButton content="Add child todo" onPress={onOpenAdd}>
+            <AddIcon />
+          </TooltipIconButton>
+        )}
       {todo.children.length > 0 && (
         <TooltipIconButton
           content="Go to child Todo"
@@ -58,7 +61,8 @@ export default function TodoActions({ todo }: TodoActionsProps) {
           </TooltipIconButton>
         )}
       {todo.children.length === 0 && todo.status === "in-progress" && (
-        <TooltipIconButton content="Pause"
+        <TooltipIconButton
+          content="Pause"
           action={actionPause}
           hiddenInputData={[{ name: "id", value: todo.id.toString() }]}
         >
@@ -66,25 +70,29 @@ export default function TodoActions({ todo }: TodoActionsProps) {
         </TooltipIconButton>
       )}
       {todo.children.length === 0 && todo.status === "in-progress" && (
-        <TooltipIconButton content="Complete"
+        <TooltipIconButton
+          content="Complete"
           action={actionComplete}
           hiddenInputData={[{ name: "id", value: todo.id.toString() }]}
         >
           <DoneIcon />
         </TooltipIconButton>
       )}
-      <TooltipIconButton content="Edit todo"
-        onPress={onOpen}
-      >
+      <TooltipIconButton content="Edit todo" onPress={onOpen}>
         <EditIcon />
       </TooltipIconButton>
-      <TooltipIconButton content="Delete todo"
+      <TooltipIconButton
+        content="Delete todo"
         action={deleteTodo.bind(null, todo.id, userId as string)}
       >
         <DeleteIcon />
       </TooltipIconButton>
       <EditTodoModal isOpen={isOpen} onOpenChange={onOpenChange} todo={todo} />
-      <AddTodoModal isOpen={isOpenAdd} onOpenChange={onOpenChangeAdd} parentId={todo.id} />
+      <AddTodoModal
+        isOpen={isOpenAdd}
+        onOpenChange={onOpenChangeAdd}
+        parentId={todo.id}
+      />
     </div>
   );
 }
