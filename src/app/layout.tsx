@@ -9,6 +9,8 @@ import {
   NavbarItem,
 } from "@nextui-org/react";
 import { AcmeLogo } from "@/components/icons/AcmeLogo";
+import { auth } from "@/auth";
+import { AuthMenu } from "@/components";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +24,8 @@ interface RootLayoutProps {
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
+  const session = await auth()
+
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -34,6 +38,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
               </NavbarBrand>
               <NavbarContent justify="end">
                 <NavbarItem>
+                  <AuthMenu session={session} />
                 </NavbarItem>
               </NavbarContent>
             </Navbar>

@@ -7,4 +7,5 @@ export { default as TodoActions } from './TodoActions';
 export { default as TodoMenu } from './TodoMenu';
 export { default as TooltipIconButton } from './TooltipIconButton';
 export { default as RegularButton } from './RegularButton';
+export { default as AuthMenu } from './AuthMenu';
 

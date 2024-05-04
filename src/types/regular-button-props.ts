@@ -4,4 +4,5 @@ export interface RegularButtonProps {
   isDisabled?: boolean;
   onPress?: () => void;
   action?: (payload: FormData) => void;
+  [key: string]: any;
 }

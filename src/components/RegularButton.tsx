@@ -7,6 +7,7 @@ export default function RegularButton({
   action,
   actionData,
   isDisabled,
+  ...props
 }: RegularButtonProps) {
   if (onPress) {
     return (
@@ -16,6 +17,7 @@ export default function RegularButton({
         variant="shadow"
         style={{ width: "10%" }}
         isDisabled={!!isDisabled}
+        {...props}
       >
         {children}
       </Button>
@@ -34,6 +36,7 @@ export default function RegularButton({
           isDisabled={!!isDisabled}
           size="sm"
           style={{ width: "10%" }}
+          {...props}
         >
           {children}
         </Button>
