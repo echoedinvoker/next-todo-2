@@ -26,7 +26,7 @@ export default function TodoActions({ todo }: TodoActionsProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const { isOpen: isOpenAdd, onOpen: onOpenAdd, onOpenChange: onOpenChangeAdd } = useDisclosure();
   const session = useSession();
-  const { ids } = useParams();
+  const { userId, ids } = useParams();
   const link = `/user/${session.data?.user?.id}/todos${ids ? `/${(ids as string[]).join("/")}` : ""}`;
 
   return (
@@ -79,7 +79,7 @@ export default function TodoActions({ todo }: TodoActionsProps) {
         <EditIcon />
       </TooltipIconButton>
       <TooltipIconButton content="Delete todo"
-        action={deleteTodo.bind(null, todo.id)}
+        action={deleteTodo.bind(null, todo.id, userId as string)}
       >
         <DeleteIcon />
       </TooltipIconButton>

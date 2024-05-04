@@ -5,25 +5,23 @@ import { revalidatePath } from "next/cache"
 import { updateParent } from "./update-parent"
 import { redirect } from "next/navigation"
 
-export async function deleteTodo(id: number) {
+export async function deleteTodo(id: number, userId: string) {
   const currentTodo = await db.todo.findUnique({ where: { id } })
   const parentId = currentTodo?.parentId
   await deleteChildren(id)
   await db.todo.delete({ where: { id } })
   if (parentId) {
-    console.log("parent id", parentId)
-    await updateParent({ parentId })
+    const parentList = await updateParent({ parentId })
     const parent = await db.todo.findUnique({
       where: { id: parentId },
       include: { children: true },
     })
     if (parent && parent.children.length === 0) {
-      revalidatePath(`/todo/${parent.parentId ?? ""}`)
-      redirect(`/todo/${parent.parentId ?? ""}`)
+      redirect(`/user/${userId}/todos/${parentList.slice(0, -1).join("/")}`)
     }
-    revalidatePath(`/todo/${parentId}`)
+    revalidatePath(`/user/${userId}/todos/${parentList.join("/")}`)
   }
-  revalidatePath("/todo")
+  revalidatePath(`/user/${userId}/todos`)
 }
 
 async function deleteChildren(id: number) {
