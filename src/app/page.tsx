@@ -2,9 +2,13 @@ import { signIn } from "@/actions/sign-in";
 import { signOut } from "@/actions/sign-out";
 import { auth } from "@/auth";
 import { Button } from "@nextui-org/react";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const session = await auth()
+  if (session) {
+    redirect(`/user/${session.user?.id}/todos`)
+  }
 
   return (
     <div>
