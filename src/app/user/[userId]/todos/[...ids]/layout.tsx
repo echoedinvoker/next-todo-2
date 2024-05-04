@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { TodoMenu } from "@/components";
 import Breads from "@/components/Breads";
 import { db } from "@/db";
 import { redirect } from "next/navigation";
@@ -26,7 +27,10 @@ export default async function TodoLayout({
 
   return (
     <div className="flex flex-col justify-center py-2 gap-2">
-      <Breads userId={session.user.id} ids={idsWithTodoNames} />
+      <div className="flex gap-2 items-center">
+        <TodoMenu />
+        <Breads userId={session.user.id} ids={idsWithTodoNames} />
+      </div>
       {children}
     </div>
   );

@@ -9,7 +9,6 @@ import {
   NavbarItem,
 } from "@nextui-org/react";
 import { AcmeLogo } from "@/components/icons/AcmeLogo";
-import TodoMenu from "@/components/TodoMenu";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,7 +34,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
               </NavbarBrand>
               <NavbarContent justify="end">
                 <NavbarItem>
-                  <TodoMenu />
                 </NavbarItem>
               </NavbarContent>
             </Navbar>

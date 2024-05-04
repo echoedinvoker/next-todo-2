@@ -8,6 +8,7 @@ interface TooltipIconButtonProps {
   onPress?: () => void;
   action?: (payload: FormData) => void;
   hiddenInputData?: { name: string; value: string }[];
+  [key: string]: any;
 }
 
 export default function TooltipIconButton({
@@ -17,6 +18,7 @@ export default function TooltipIconButton({
   content,
   href,
   hiddenInputData,
+  ...props
 }: TooltipIconButtonProps) {
   return (
     <Tooltip {...(content && { content })}>
@@ -26,16 +28,21 @@ export default function TooltipIconButton({
             {hiddenInputData?.map(({ name, value }) => (
               <input key={name} type="hidden" name={name} value={value} />
             ))}
-            <Button type="submit" isIconOnly>
+            <Button type="submit" {...props}
+              isIconOnly>
               {children}
             </Button>
           </form>
         ) : href ? (
-          <Button href={href} as={Link} isIconOnly>
+          <Button href={href} as={Link}
+              {...props}
+              isIconOnly>
             {children}
           </Button> 
         ) : (
-          <Button onClick={onPress} isIconOnly>
+          <Button onClick={onPress}
+              {...props}
+                isIconOnly>
             {children}
           </Button>
         )}
