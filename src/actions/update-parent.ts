@@ -4,17 +4,20 @@ import { Todo } from "@prisma/client";
 interface UpdateParentProps {
   parentId: number;
   elapsed?: number;
+  parentList?: number[];
 }
 
-export async function updateParent({ parentId, elapsed }: UpdateParentProps) {
+export async function updateParent({ parentId, elapsed, parentList = [] }: UpdateParentProps) {
   const parent = await db.todo.findUnique({
     where: { id: parentId },
     include: { children: true },
   });
 
   if (!parent) {
-    return;
+    return parentList;
   }
+
+  parentList.unshift(parent.id)
 
   const duration = parent.children.reduce<any>(
     (acc, child) => {
@@ -47,12 +50,14 @@ export async function updateParent({ parentId, elapsed }: UpdateParentProps) {
   });
 
   if (parent.parentId) {
-    const props: any = { parentId: parent.parentId };
+    const props: any = { parentId: parent.parentId, parentList };
     if (elapsed) {
       props.elapsed = elapsed;
     }
     await updateParent(props);
   }
+
+  return parentList;
 }
 
 interface TodoWithChildren extends Todo {

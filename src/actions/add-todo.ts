@@ -32,9 +32,9 @@ export async function addTodo(formState: null, formData: FormData) {
   });
 
   if (parentId) {
-    await updateParent({ parentId: Number(parentId) });
-    revalidatePath(`/user/${userId}/todos/${parentId}`);
-    redirect(`/user/${userId}/todos/${parentId}`);
+    const parentList = await updateParent({ parentId: Number(parentId) });
+    revalidatePath(`/user/${userId}/todos/${parentList.join("/")}`);
+    redirect(`/user/${userId}/todos/${parentList.join("/")}`);
   }
 
   revalidatePath(`/user/${userId}/todos`);
