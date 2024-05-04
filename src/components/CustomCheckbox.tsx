@@ -2,6 +2,7 @@
 
 import { useCheckbox, Chip, VisuallyHidden, tv } from "@nextui-org/react";
 import { CheckIcon } from "./icons";
+import { useRef } from "react";
 
 const checkbox = tv({
   slots: {
@@ -35,6 +36,8 @@ export default function CustomCheckbox(props: any) {
     ...props,
   });
 
+  const ref = useRef<any>(null);
+
   const styles = checkbox({ isSelected, isFocusVisible });
 
   return (
@@ -43,6 +46,7 @@ export default function CustomCheckbox(props: any) {
         <input {...getInputProps()} />
       </VisuallyHidden>
       <Chip
+        ref={ref as any}
         classNames={{
           base: styles.base(),
           content: styles.content(),
