@@ -9,7 +9,7 @@ interface BreadsProps {
 
 export default function Breads({ userId, ids }: BreadsProps) {
   return (
-    <Breadcrumbs>
+    <Breadcrumbs variant="bordered">
       <BreadcrumbItem key="Root" href={`/user/${userId}/todos`}>Root</BreadcrumbItem>
       {ids.map((v, i, a) => (
         <BreadcrumbItem

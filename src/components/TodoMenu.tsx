@@ -16,6 +16,8 @@ export default function TodoMenu() {
           content="Add Todo"
           onPress={onOpen}
           size="sm"
+          radius="full"
+          variant="bordered"
         >
           <PlusIcon />
         </TooltipIconButton>
