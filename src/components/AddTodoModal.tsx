@@ -55,7 +55,7 @@ export default function AddTodoModal({
                 variant="bordered"
                 type="number"
               />
-              {parentId && <input name="parentId" type="hidden" value={parentId} />}
+              {parentId > 0 && <input name="parentId" type="hidden" value={parentId} />}
               <input
                 name="userId"
                 type="hidden"
