@@ -3,6 +3,7 @@
 import { changeTodoParent } from "@/actions/change-todo-parent";
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
 import { useParams } from "next/navigation";
+import { useEffect } from "react";
 
 interface BreadsProps {
   userId: string;
@@ -11,6 +12,9 @@ interface BreadsProps {
 
 export default function Breads({ userId, ids }: BreadsProps) {
   const params = useParams();
+  useEffect(() => {
+    localStorage.setItem("idsOfTodoPage", JSON.stringify(ids));
+  }, [ids]);
   return (
     <Breadcrumbs variant="bordered">
       <BreadcrumbItem

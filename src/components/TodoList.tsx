@@ -32,10 +32,26 @@ export default function TodoList({
   todos: TodoWithChildren[];
   isLeaves?: boolean;
 }) {
-  const [groupSelected, setGroupSelected] = useState<string[]>([]);
+  const [groupSelected, setGroupSelected] = useState<string[]>(
+    JSON.parse(
+      localStorage.getItem(
+        isLeaves ? "leavesStatusFilter" : "todosStatusFilter",
+      ) ?? "[]",
+    ),
+  );
+  function handleChangedGroupSelected(value: string[]) {
+    setGroupSelected(value);
+    if (isLeaves) {
+      localStorage.setItem("leavesStatusFilter", JSON.stringify(value));
+    } else {
+      localStorage.setItem("todosStatusFilter", JSON.stringify(value));
+    }
+  }
   const sortingField = isLeaves ? "leafOrder" : "order";
   const params = useParams();
-  const sortedTodos = todos.sort((a, b) => (a[sortingField] ?? 0) - (b[sortingField] ?? 0));
+  const sortedTodos = todos.sort(
+    (a, b) => (a[sortingField] ?? 0) - (b[sortingField] ?? 0),
+  );
   const filteredTodos = sortedTodos.filter((todo) => {
     if (groupSelected.length === 0) return true;
     return groupSelected.includes(todo.status);
@@ -47,7 +63,7 @@ export default function TodoList({
         className="gap-1"
         orientation="horizontal"
         value={groupSelected}
-        onChange={setGroupSelected as any}
+        onChange={handleChangedGroupSelected as any}
       >
         <CustomCheckbox value="not-started">NOT-STARTED</CustomCheckbox>
         <CustomCheckbox value="in-progress">IN-PROGRESS</CustomCheckbox>
@@ -56,9 +72,9 @@ export default function TodoList({
       </CheckboxGroup>
       <Table aria-label="Todos">
         <TableHeader>
-          {(isLeaves ?
-            headers.filter((header) => header.key !== "children") :
-            headers
+          {(isLeaves
+            ? headers.filter((header) => header.key !== "children")
+            : headers
           ).map((header) => (
             <TableColumn key={header.key}>{header.label}</TableColumn>
           ))}

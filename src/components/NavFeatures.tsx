@@ -7,13 +7,15 @@ import { useParams, usePathname } from "next/navigation";
 export default function NavFeatures() {
   const pathname = usePathname();
   const params = useParams();
+  const idsOfTodoPage = JSON.parse(localStorage.getItem("idsOfTodoPage") ?? "[]");
+  const idsParam = idsOfTodoPage.map((v: any) => v.id).join("/");
   return (
     <NavbarContent justify="center">
       <NavbarItem isActive={pathname.includes("todos")}>
         {pathname.includes("todos") ? (
           <div>Todos</div>
         ) : (
-          <Link href={`/user/${params.userId}/todos`}>Todos</Link>
+          <Link href={`/user/${params.userId}/todos/${idsParam}`}>Todos</Link>
         )}
       </NavbarItem>
       <NavbarItem isActive={pathname.includes("leaves")}>

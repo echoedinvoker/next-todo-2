@@ -37,6 +37,7 @@ export default function RenderCell({ item, columnKey, isLeaves = false }: Render
         case "timeSpent":
           return <TimeElapsed todo={todo} />;
         case "children":
+          if (isLeaves) return null;
           if (todo.children.length > 0) {
             const completed = todo.children.filter(
               (child) => child.status === "completed",
