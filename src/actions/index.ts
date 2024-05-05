@@ -9,3 +9,4 @@ export { signIn } from "./sign-in";
 export { signOut } from "./sign-out";
 export { switchTodoOrder } from "./switch-todo-order";
 export { updateParent } from "./update-parent";
+export { getParentTitleAndIds } from "./get-parent-title-and-ids";
