@@ -56,7 +56,10 @@ export default function TodoList({
       </CheckboxGroup>
       <Table aria-label="Todos">
         <TableHeader>
-          {headers.map((header) => (
+          {(isLeaves ?
+            headers.filter((header) => header.key !== "children") :
+            headers
+          ).map((header) => (
             <TableColumn key={header.key}>{header.label}</TableColumn>
           ))}
         </TableHeader>
