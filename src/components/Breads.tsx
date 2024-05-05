@@ -1,6 +1,8 @@
 "use client";
 
+import { changeTodoParent } from "@/actions/change-todo-parent";
 import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
+import { useParams } from "next/navigation";
 
 interface BreadsProps {
   userId: string;
@@ -8,6 +10,7 @@ interface BreadsProps {
 }
 
 export default function Breads({ userId, ids }: BreadsProps) {
+  const params = useParams();
   return (
     <Breadcrumbs variant="bordered">
       <BreadcrumbItem
@@ -19,11 +22,7 @@ export default function Breads({ userId, ids }: BreadsProps) {
         onDrop={async (e) => {
           e.preventDefault();
           if (ids.length === 0) return;
-          console.log("dropped-todo-id", null);
-          console.log(
-            "dragged-todo-id",
-            e.dataTransfer.getData("dragged-todo-id"),
-          );
+          changeTodoParent(params, Number(e.dataTransfer.getData("dragged-todo-id")), null);
         }}
       >
         Root
@@ -37,11 +36,7 @@ export default function Breads({ userId, ids }: BreadsProps) {
           onDrop={async (e) => {
             e.preventDefault();
             if (v.id === a.at(-1)!.id) return;
-            console.log("dropped-todo-id", v.id);
-            console.log(
-              "dragged-todo-id",
-              e.dataTransfer.getData("dragged-todo-id"),
-            );
+            changeTodoParent(params, Number(e.dataTransfer.getData("dragged-todo-id")), Number(v.id));
           }}
           href={`/user/${userId}/todos/${a
             .map((v) => v.id)

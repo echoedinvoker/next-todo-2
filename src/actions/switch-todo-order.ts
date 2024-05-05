@@ -3,8 +3,7 @@
 import { db } from "@/db";
 import { revalidatePath } from "next/cache";
 
-export async function switchTodoOrder(a: any, b: any) {
-  console.log("switchTodoOrder", a, b);
+export async function switchTodoOrder(params: any, a: any, b: any) {
   const todoA = await db.todo.findUnique({ where: { id: Number(a) } });
   const todoB = await db.todo.findUnique({ where: { id: Number(b) } });
   if (!todoA || !todoB) {
@@ -21,9 +20,5 @@ export async function switchTodoOrder(a: any, b: any) {
     data: { order: todoA.order },
   });
 
-  if (todoA.parentId) {
-    revalidatePath(`/todo/${todoA.parentId}`);
-  } else {
-    revalidatePath("/todo");
-  }
+  revalidatePath(`/user/${params.userId}/todos/${params.ids.join("/")}`);
 }

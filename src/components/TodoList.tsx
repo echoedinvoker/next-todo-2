@@ -13,6 +13,7 @@ import { Key, useState } from "react";
 import { CustomCheckbox, RenderCell } from "@/components";
 import { TodoWithChildren } from "@/types";
 import { switchTodoOrder } from "@/actions/switch-todo-order";
+import { useParams } from "next/navigation";
 
 const headers = [
   { key: "title", label: "Title" },
@@ -25,6 +26,7 @@ const headers = [
 
 export default function TodoList({ todos }: { todos: TodoWithChildren[] }) {
   const [groupSelected, setGroupSelected] = useState<string[]>([]);
+  const params = useParams();
   const sortedTodos = todos.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   const filteredTodos = sortedTodos.filter((todo) => {
     if (groupSelected.length === 0) return true;
@@ -65,7 +67,7 @@ export default function TodoList({ todos }: { todos: TodoWithChildren[] }) {
               onDrop={async (e) => {
                 e.preventDefault();
                 const draggingId = e.dataTransfer.getData("dragged-todo-id");
-                await switchTodoOrder(draggingId, item.id);
+                await switchTodoOrder(params, draggingId, item.id);
               }}
             >
               {(columnKey) => (
