@@ -9,7 +9,8 @@ export default function AuthMenu({ session }: AuthMenuProps) {
   if (session?.user) {
     return <Popover placement="left">
       <PopoverTrigger>
-        <Avatar role="button" className="mt-3"
+        <Avatar as="button" className="transition-transform"
+          color="secondary" name={session.user.name} size="sm"
           {...(session.user?.image ? { src: session.user.image } : { name: session.user.name })}
         />
       </PopoverTrigger>

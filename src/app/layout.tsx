@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react";
 import { AcmeLogo } from "@/components/icons/AcmeLogo";
 import { auth } from "@/auth";
-import { AuthMenu } from "@/components";
+import { AuthMenu, NavFeatures } from "@/components";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,6 +36,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
                 <AcmeLogo />
                 <p className="font-bold text-inherit">ACME</p>
               </NavbarBrand>
+              <NavFeatures />
               <NavbarContent justify="end">
                 <NavbarItem>
                   <AuthMenu session={session} />
