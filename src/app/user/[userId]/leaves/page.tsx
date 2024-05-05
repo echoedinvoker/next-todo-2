@@ -12,10 +12,9 @@ export default async function leavesPage({ params }: LeavesPageProps) {
     include: { children: true },
  });
   const leaves = todos.filter((todo) => todo.children.length === 0);
-  const sortedLeaves = leaves.sort((a, b) => (a.leafOrder ?? 0) - (b.leafOrder ?? 0));
   return (
     <div className="flex flex-col justify-center py-2 gap-2">
-    <TodoList todos={sortedLeaves} />
+    <TodoList todos={leaves} isLeaves />
     </div>
   );
 }

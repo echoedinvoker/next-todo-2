@@ -3,23 +3,23 @@
 import { db } from "@/db";
 import { revalidatePath } from "next/cache";
 
-export async function switchTodoOrder(params: any, todoIdA: number, todoIdB: number) {
-  console.log("switchTodoOrder", todoIdA, todoIdB);
+export async function switchLeafOrder(params: any, todoIdA: number, todoIdB: number) {
+  console.log("switchLeafOrder", todoIdA, todoIdB);
   const todoA = await db.todo.findUnique({ where: { id: todoIdA } });
   const todoB = await db.todo.findUnique({ where: { id: todoIdB } });
   if (!todoA || !todoB) {
-    throw new Error("Todos not found");
+    throw new Error("Leaves not found");
   }
 
   await db.todo.update({
     where: { id: todoIdA },
-    data: { order: todoB.order },
+    data: { leafOrder: todoB.leafOrder },
   });
 
   await db.todo.update({
     where: { id: todoIdB },
-    data: { order: todoA.order },
+    data: { leafOrder: todoA.leafOrder },
   });
 
-  revalidatePath(`/user/${params.userId}/todos/${params.ids.join("/")}`);
+  revalidatePath(`/user/${params.userId}/leaves`);
 }

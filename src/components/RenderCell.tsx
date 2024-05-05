@@ -10,9 +10,10 @@ import { timeFormatter } from "@/helpers/time-formatter";
 interface RenderCellProps {
   item: TodoWithChildren;
   columnKey: Key;
+  isLeaves?: boolean;
 }
 
-export default function RenderCell({ item, columnKey }: RenderCellProps) {
+export default function RenderCell({ item, columnKey, isLeaves = false }: RenderCellProps) {
   const renderCell = useCallback((todo: TodoWithChildren, columnKey: Key) => {
       const cellValue = todo[columnKey as keyof Todo];
 

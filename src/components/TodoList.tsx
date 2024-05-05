@@ -14,6 +14,7 @@ import { CustomCheckbox, RenderCell } from "@/components";
 import { TodoWithChildren } from "@/types";
 import { switchTodoOrder } from "@/actions/switch-todo-order";
 import { useParams } from "next/navigation";
+import { switchLeafOrder } from "@/actions/switch-leaf-order";
 
 const headers = [
   { key: "title", label: "Title" },
@@ -24,10 +25,17 @@ const headers = [
   { key: "timeSpent", label: "Elapsed" },
 ];
 
-export default function TodoList({ todos }: { todos: TodoWithChildren[] }) {
+export default function TodoList({
+  todos,
+  isLeaves = false,
+}: {
+  todos: TodoWithChildren[];
+  isLeaves?: boolean;
+}) {
   const [groupSelected, setGroupSelected] = useState<string[]>([]);
+  const sortingField = isLeaves ? "leafOrder" : "order";
   const params = useParams();
-  const sortedTodos = todos.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const sortedTodos = todos.sort((a, b) => (a[sortingField] ?? 0) - (b[sortingField] ?? 0));
   const filteredTodos = sortedTodos.filter((todo) => {
     if (groupSelected.length === 0) return true;
     return groupSelected.includes(todo.status);
@@ -67,12 +75,20 @@ export default function TodoList({ todos }: { todos: TodoWithChildren[] }) {
               onDrop={async (e) => {
                 e.preventDefault();
                 const draggingId = e.dataTransfer.getData("dragged-todo-id");
-                await switchTodoOrder(params, draggingId, item.id);
+                if (!isLeaves) {
+                  await switchTodoOrder(params, Number(draggingId), item.id);
+                } else {
+                  await switchLeafOrder(params, Number(draggingId), item.id);
+                }
               }}
             >
               {(columnKey) => (
                 <TableCell>
-                  <RenderCell item={item} columnKey={columnKey as Key} />
+                  <RenderCell
+                    item={item}
+                    columnKey={columnKey as Key}
+                    isLeaves={isLeaves}
+                  />
                 </TableCell>
               )}
             </TableRow>
