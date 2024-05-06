@@ -31,7 +31,7 @@ export default function TimeElapsed({ todo }: { todo: TodoWithChildren }) {
       onPress={() => {
         router.push(`/user/${todo.userId}/timer/${inProgressTodoId}`)
       }}
-      variant="solid" size="md" action={() => {}}>
+      variant="solid" size="md">
         {timeFormatter({ milliseconds: totalTimestamp })}
       </RegularButton>
     );

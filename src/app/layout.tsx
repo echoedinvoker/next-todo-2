@@ -27,7 +27,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   const session = await auth()
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <div className="container mx-auto px-4 max-w-6xl">
           <Providers>
