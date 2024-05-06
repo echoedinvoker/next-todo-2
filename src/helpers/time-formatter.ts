@@ -23,3 +23,4 @@ export function timeFormatter({
 
   return `${remainingDays ? `${remainingDays}d ` : ""}${remainingHours ? `${remainingHours}h ` : ""}${remainingMinutes ? `${remainingMinutes}m ` : ""}${remainingSeconds ? `${remainingSeconds}s ` : ""}`;
 }
+

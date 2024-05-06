@@ -1,39 +1,39 @@
 "use client";
 
-import { Todo } from "@prisma/client";
+import { timeFormatter } from "@/helpers/time-formatter";
+import { TodoWithChildren } from "@/types";
 import { useState } from "react";
 import { useInterval } from "react-use";
-
-interface TodoWithChildren extends Todo {
-  children: Todo[];
-}
-
-function timeFormatter(seconds: number) {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const remainingSeconds = seconds % 60;
-
-  return `${hours ? `${hours}h ` : ""}${minutes ? `${minutes}m ` : ""}${remainingSeconds}s`;
-}
+import RegularButton from "./RegularButton";
+import { useRouter } from "next/navigation";
+import { timestampCollector } from "@/helpers";
 
 export default function TimeElapsed({ todo }: { todo: TodoWithChildren }) {
   const [currentTimestamp, setCurrentTimestamp] = useState<number | null>(null);
-  const diff = (currentTimestamp ?? 0) - todo.updatedAt.getTime();
-  const elapsedChild = Math.floor(
-    (todo.timeSpent +
-      (todo.status === "in-progress" ? (diff > 0 ? diff : 0) : 0)) /
-      1000,
-  );
-  const elapsedParent = Math.floor(todo.timeSpent / 1000);
-
   useInterval(() => {
     setCurrentTimestamp(Date.now());
   }, 1000);
 
-  if (!currentTimestamp) return null;
+  const router = useRouter()
 
-  if (todo.children.length > 0)
-    return <div>{timeFormatter(elapsedParent)}</div>;
+  if (!currentTimestamp) {
+    return null;
+  }
 
-  return <div>{timeFormatter(elapsedChild)}</div>;
+  const { totalTimestamp, inProgressTodoId } = timestampCollector(
+    todo,
+    0,
+    currentTimestamp,
+  );
+  if (inProgressTodoId)
+    return (
+      <RegularButton
+      onPress={() => {
+        router.push(`/user/${todo.userId}/timer/${inProgressTodoId}`)
+      }}
+      variant="solid" size="md" action={() => {}}>
+        {timeFormatter({ milliseconds: totalTimestamp })}
+      </RegularButton>
+    );
+  return <div>{timeFormatter({ milliseconds: totalTimestamp })}</div>;
 }

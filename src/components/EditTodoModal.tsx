@@ -2,6 +2,7 @@
 
 import { editTodo } from "@/actions/edit-todo";
 import { timeFormatter } from "@/helpers/time-formatter";
+import { useFormattedTime } from "@/hooks/use-formatted-time";
 import { TodoWithChildren } from "@/types";
 import {
   Modal,
@@ -12,7 +13,7 @@ import {
   ModalFooter,
   Button,
 } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useFormState } from "react-dom";
 
 interface EditTodoModalProps {
@@ -29,16 +30,37 @@ export default function EditTodoModal({
   const [_, action] = useFormState(editTodo, { message: "" });
   const [name, setName] = useState(todo.title);
   const [description, setDescription] = useState(todo.description);
-  const [duration, setDuration] = useState(todo.duration ?? "");
-  const [timeSpentMin, setTimeSpentMin] = useState(
-    timeFormatter({ milliseconds: todo.timeSpent }),
+  const {
+    formattedTime: duration,
+    setFormattedTime: setDuration,
+    isFormattedTimeValid: isDurationValid,
+    timestamp: durationTimestamp,
+  } = useFormattedTime(
+    todo.duration ? timeFormatter({ milliseconds: todo.duration }) : "",
   );
 
+  const {
+    formattedTime: timeSpent,
+    setFormattedTime: setTimeSpent,
+    isFormattedTimeValid: isTimeSpentValid,
+    timestamp: timeSpentTimestamp,
+  } = useFormattedTime();
+
+  const disabled = useMemo(() => {
+    return !name || !isTimeSpentValid || !isDurationValid;
+  }, [name, isTimeSpentValid]);
+
   useEffect(() => {
-    console.log("timeSpent", todo.timeSpent);
-    isOpen && setTimeSpentMin(timeFormatter({ milliseconds: todo.timeSpent + (
-      todo.status === "in-progress" ? (Date.now() - todo.updatedAt.getTime()) : 0
-    ) }));
+    isOpen &&
+      setTimeSpent(
+        timeFormatter({
+          milliseconds:
+            todo.timeSpent +
+            (todo.status === "in-progress"
+              ? Date.now() - todo.updatedAt.getTime()
+              : 0),
+        }),
+      );
   }, [isOpen]);
 
   return (
@@ -46,7 +68,6 @@ export default function EditTodoModal({
       <ModalContent>
         {(onClose) => (
           <form action={action}>
-            {timeSpentMin}
             <ModalHeader className="flex flex-col gap-1">New TODO</ModalHeader>
 
             <ModalBody>
@@ -71,30 +92,52 @@ export default function EditTodoModal({
               <Input
                 autoFocus
                 label="Duration (min, optional)"
-                name="duration"
                 placeholder="Enter TODO duration"
                 variant="bordered"
-                type="number"
                 value={duration}
                 onValueChange={setDuration}
+                isInvalid={!isDurationValid}
+                errorMessage={!isDurationValid && "Invalid duration format"}
+                color={!isDurationValid ? "danger" : undefined}
               />
               <Input
                 autoFocus
                 label="Elasped (min, optional)"
-                name="timeSpentMin"
                 placeholder="Enter TODO elasped"
                 variant="bordered"
-                value={timeSpentMin}
-                onValueChange={setTimeSpentMin}
+                value={timeSpent}
+                onValueChange={setTimeSpent}
+                isInvalid={!isTimeSpentValid}
+                errorMessage={!isTimeSpentValid && "Invalid time spent format"}
+                color={!isTimeSpentValid ? "danger" : undefined}
               />
               <input name="id" type="hidden" value={todo.id} />
               <input name="oldTimeSpent" type="hidden" value={todo.timeSpent} />
+              {durationTimestamp !== null && (
+                <input
+                  name="duration"
+                  type="hidden"
+                  value={durationTimestamp}
+                />
+              )}
+              {timeSpentTimestamp !== null && !isNaN(timeSpentTimestamp) && (
+                <input
+                  name="timeSpent"
+                  type="hidden"
+                  value={timeSpentTimestamp}
+                />
+              )}
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="flat" onPress={onClose}>
                 Close
               </Button>
-              <Button color="primary" onPress={onClose} type="submit">
+              <Button
+                color="primary"
+                onPress={onClose}
+                type="submit"
+                isDisabled={disabled}
+              >
                 Edit TODO
               </Button>
             </ModalFooter>

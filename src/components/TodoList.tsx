@@ -9,7 +9,7 @@ import {
   TableCell,
   CheckboxGroup,
 } from "@nextui-org/react";
-import { Key, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import { CustomCheckbox, RenderCell } from "@/components";
 import { TodoWithChildren } from "@/types";
 import { useParams } from "next/navigation";
@@ -31,13 +31,16 @@ export default function TodoList({
   todos: TodoWithChildren[];
   isLeaves?: boolean;
 }) {
-  const [groupSelected, setGroupSelected] = useState<string[]>(
-    JSON.parse(
+  const [groupSelected, setGroupSelected] = useState<string[]>([]);
+  useEffect(() => {
+    const groupSelected = JSON.parse(
       localStorage.getItem(
         isLeaves ? "leavesStatusFilter" : "todosStatusFilter",
       ) ?? "[]",
-    ),
-  );
+    );
+    setGroupSelected(groupSelected);
+  }, []);
+
   function handleChangedGroupSelected(value: string[]) {
     setGroupSelected(value);
     if (isLeaves) {
@@ -116,7 +119,7 @@ export default function TodoList({
                     onUp={handleUp}
                     onDown={handleDown}
                   />
-                </TableCell>
+               </TableCell>
               )}
             </TableRow>
           )}

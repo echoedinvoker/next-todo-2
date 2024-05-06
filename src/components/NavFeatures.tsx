@@ -3,11 +3,16 @@
 import { NavbarContent, NavbarItem } from "@nextui-org/react";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function NavFeatures() {
   const pathname = usePathname();
   const params = useParams();
-  const idsOfTodoPage = JSON.parse(localStorage.getItem("idsOfTodoPage") ?? "[]");
+  const [idsOfTodoPage, setIdsOfTodoPage] = useState([]);
+  useEffect(() => {
+    const idsOfTodoPage = JSON.parse(localStorage.getItem("idsOfTodoPage") ?? "[]");
+    setIdsOfTodoPage(idsOfTodoPage);
+  }, []);
   const idsParam = idsOfTodoPage.map((v: any) => v.id).join("/");
   return (
     <NavbarContent justify="center">

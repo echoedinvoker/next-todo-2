@@ -69,7 +69,7 @@ export default function RenderCell({
         );
       case "duration":
         return todo.duration
-          ? timeFormatter({ minutes: todo.duration })
+          ? timeFormatter({ milliseconds: todo.duration })
           : "N/A";
       case "actions":
         return <TodoActions todo={todo} />;

@@ -13,6 +13,7 @@ export default async function leavesPage({ params }: LeavesPageProps) {
     where: { userId: params.userId },
     include: { children: true },
  });
+  console.log(todos);
   const leaves = todos.filter((todo) => todo.children.length === 0)
 
   for (const leaf of leaves) {
