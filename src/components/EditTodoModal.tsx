@@ -1,6 +1,8 @@
 "use client";
 
 import { editTodo } from "@/actions/edit-todo";
+import { timeFormatter } from "@/helpers/time-formatter";
+import { TodoWithChildren } from "@/types";
 import {
   Modal,
   ModalBody,
@@ -10,21 +12,41 @@ import {
   ModalFooter,
   Button,
 } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 
-export default function EditTodoModal({ isOpen, onOpenChange, todo }: any) {
-  const [formState, action] = useFormState(editTodo, { message: "" });
+interface EditTodoModalProps {
+  isOpen: boolean;
+  onOpenChange: any;
+  todo: TodoWithChildren;
+}
+
+export default function EditTodoModal({
+  isOpen,
+  onOpenChange,
+  todo,
+}: EditTodoModalProps) {
+  const [_, action] = useFormState(editTodo, { message: "" });
   const [name, setName] = useState(todo.title);
   const [description, setDescription] = useState(todo.description);
   const [duration, setDuration] = useState(todo.duration ?? "");
-  const [timeSpentMin, setTimeSpentMin] = useState(Math.floor(todo.timeSpent / 1000 / 60).toString());
+  const [timeSpentMin, setTimeSpentMin] = useState(
+    timeFormatter({ milliseconds: todo.timeSpent }),
+  );
+
+  useEffect(() => {
+    console.log("timeSpent", todo.timeSpent);
+    isOpen && setTimeSpentMin(timeFormatter({ milliseconds: todo.timeSpent + (
+      todo.status === "in-progress" ? (Date.now() - todo.updatedAt.getTime()) : 0
+    ) }));
+  }, [isOpen]);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
       <ModalContent>
         {(onClose) => (
           <form action={action}>
+            {timeSpentMin}
             <ModalHeader className="flex flex-col gap-1">New TODO</ModalHeader>
 
             <ModalBody>
@@ -62,7 +84,6 @@ export default function EditTodoModal({ isOpen, onOpenChange, todo }: any) {
                 name="timeSpentMin"
                 placeholder="Enter TODO elasped"
                 variant="bordered"
-                type="number"
                 value={timeSpentMin}
                 onValueChange={setTimeSpentMin}
               />
