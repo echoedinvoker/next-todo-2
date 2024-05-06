@@ -7,36 +7,54 @@ import TodoActions from "./TodoActions";
 import TimeElapsed from "./TimeElasped";
 import { timeFormatter } from "@/helpers/time-formatter";
 import Link from "next/link";
+import { DownIcon, UpIcon } from "./icons";
 
 interface RenderCellProps {
   item: TodoWithChildren;
   columnKey: Key;
   isLeaves?: boolean;
+  onUp?: (id: number) => void;
+  onDown?: (id: number) => void;
 }
 
 export default function RenderCell({
   item,
   columnKey,
   isLeaves = false,
+  onUp,
+  onDown,
 }: RenderCellProps) {
   const renderCell = useCallback((todo: TodoWithChildren, columnKey: Key) => {
     const cellValue = todo[columnKey as keyof Todo];
 
+
     switch (columnKey) {
       case "title":
         return (
-          <div className="flex flex-col gap-1">
+          <div className="flex gap-1 items-center">
             {isLeaves && (
-              <div>
-                <Link
-                  className="text-xs text-default-500 border-default border-2 rounded-full px-2 py-1 hover:bg-default-500 hover:text-white"
-                  href={`/user/${todo.userId}/todos/${todo.parentList.map((list: any) => list.id).join("/")}`}
-                >
-                  {todo.parentList.at(-1).title}
-                </Link>
+              <div className="flex flex-col justify-center">
+                <UpIcon role="button"
+                  onClick={() => onUp && onUp(todo.id)}
+                />
+                <DownIcon role="button"
+                  onClick={() => onDown && onDown(todo.id)}
+                />
               </div>
             )}
-            <div>{cellValue as any}</div>
+            <div className="flex flex-col gap-1">
+              {isLeaves && (
+                <div>
+                  <Link
+                    className="text-xs text-default-500 border-default border-2 rounded-full px-2 py-1 hover:bg-default-500 hover:text-white"
+                    href={`/user/${todo.userId}/todos/${todo.parentList.map((list: any) => list.id).join("/")}`}
+                  >
+                    {todo.parentList.at(-1).title}
+                  </Link>
+                </div>
+              )}
+              <div>{cellValue as any}</div>
+            </div>
           </div>
         );
       case "status":

@@ -12,9 +12,8 @@ import {
 import { Key, useState } from "react";
 import { CustomCheckbox, RenderCell } from "@/components";
 import { TodoWithChildren } from "@/types";
-import { switchTodoOrder } from "@/actions/switch-todo-order";
 import { useParams } from "next/navigation";
-import { switchLeafOrder } from "@/actions/switch-leaf-order";
+import { switchLeafOrderJumpDown, switchLeafOrderJumpUp, switchTodoOrder, switchLeafOrder } from "@/actions";
 
 const headers = [
   { key: "title", label: "Title" },
@@ -56,6 +55,13 @@ export default function TodoList({
     if (groupSelected.length === 0) return true;
     return groupSelected.includes(todo.status);
   });
+
+  async function handleUp(id: number) {
+    await switchLeafOrderJumpUp(params, id, groupSelected);
+  }
+  async function handleDown(id: number) {
+    await switchLeafOrderJumpDown(params, id, groupSelected);
+  }
 
   return (
     <>
@@ -107,6 +113,8 @@ export default function TodoList({
                     item={item}
                     columnKey={columnKey as Key}
                     isLeaves={isLeaves}
+                    onUp={handleUp}
+                    onDown={handleDown}
                   />
                 </TableCell>
               )}
