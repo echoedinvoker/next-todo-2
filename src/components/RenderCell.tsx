@@ -45,12 +45,14 @@ export default function RenderCell({
             <div className="flex flex-col gap-1">
               {isLeaves && (
                 <div>
-                  <Link
-                    className="text-xs text-default-500 border-default border-2 rounded-full px-2 py-1 hover:bg-default-500 hover:text-white"
-                    href={`/user/${todo.userId}/todos/${todo.parentList.map((list: any) => list.id).join("/")}`}
-                  >
-                    {todo.parentList.at(-1).title}
-                  </Link>
+                  {todo.parentList.length > 0 && (
+                    <Link
+                      className="text-xs text-default-500 border-default border-2 rounded-full px-2 py-1 hover:bg-default-500 hover:text-white"
+                      href={`/user/${todo.userId}/todos/${todo.parentList.map((list: any) => list.id).join("/")}`}
+                    >
+                      {todo.parentList.at(-1).title}
+                    </Link>
+                  )}
                 </div>
               )}
               <div>{cellValue as any}</div>

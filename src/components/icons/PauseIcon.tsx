@@ -11,7 +11,7 @@ export const PauseIcon = (props: any) => (
   >
     <path
       d="M8 5V19M16 5V19"
-      stroke="#000000"
+      stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"

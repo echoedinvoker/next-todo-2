@@ -113,7 +113,7 @@ export default function EditTodoModal({
               />
               <input name="id" type="hidden" value={todo.id} />
               <input name="oldTimeSpent" type="hidden" value={todo.timeSpent} />
-              {durationTimestamp !== null && (
+              {durationTimestamp !== null  && !isNaN(durationTimestamp) && (
                 <input
                   name="duration"
                   type="hidden"

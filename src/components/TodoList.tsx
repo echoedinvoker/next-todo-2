@@ -49,12 +49,8 @@ export default function TodoList({
       localStorage.setItem("todosStatusFilter", JSON.stringify(value));
     }
   }
-  const sortingField = isLeaves ? "leafOrder" : "order";
   const params = useParams();
-  const sortedTodos = todos.sort(
-    (a, b) => (a[sortingField] ?? 0) - (b[sortingField] ?? 0),
-  );
-  const filteredTodos = sortedTodos.filter((todo) => {
+  const filteredTodos = todos.filter((todo) => {
     if (groupSelected.length === 0) return true;
     return groupSelected.includes(todo.status);
   });

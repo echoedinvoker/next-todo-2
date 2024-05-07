@@ -1,6 +1,7 @@
 "use client";
 
 import { addTodo } from "@/actions";
+import { useFormattedTime } from "@/hooks/use-formatted-time";
 import {
   Modal,
   ModalBody,
@@ -23,6 +24,13 @@ export default function AddTodoModal({
   parentId: number;
 }) {
   const [_, action] = useFormState(addTodo, null as any);
+  const {
+    formattedTime: duration,
+    setFormattedTime: setDuration,
+    isFormattedTimeValid: isDurationValid,
+    timestamp: durationTimestamp,
+  } = useFormattedTime();
+
   const session = useSession();
 
   return (
@@ -50,12 +58,22 @@ export default function AddTodoModal({
               <Input
                 autoFocus
                 label="Duration (min, optional)"
-                name="duration"
                 placeholder="Enter TODO duration"
                 variant="bordered"
-                type="number"
+                value={duration}
+                onValueChange={setDuration}
+                isInvalid={!isDurationValid}
+                errorMessage={!isDurationValid && "Invalid duration format"}
+                color={!isDurationValid ? "danger" : undefined}
               />
               {parentId > 0 && <input name="parentId" type="hidden" value={parentId} />}
+              {durationTimestamp !== null  && !isNaN(durationTimestamp) && (
+                <input
+                  name="duration"
+                  type="hidden"
+                  value={durationTimestamp}
+                />
+              )}
               <input
                 name="userId"
                 type="hidden"

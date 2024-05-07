@@ -72,6 +72,5 @@ model Todo {
   children          Todo[]    @relation(name: "TodoTree")
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
-  order             Int?
-  leafOrder         Int?
+  order             Int
 }
