@@ -24,9 +24,9 @@ export default function Breads({ userId, ids }: BreadsProps) {
           e.preventDefault();
         }}
         onDrop={async (e) => {
-          e.preventDefault();
           if (ids.length === 0) return;
-          changeTodoParent(params, Number(e.dataTransfer.getData("dragged-todo-id")), null);
+          const dragTodoId = e.dataTransfer.getData("drag-todo-id")
+          changeTodoParent(params, Number(dragTodoId), null);
         }}
       >
         Root
@@ -38,9 +38,9 @@ export default function Breads({ userId, ids }: BreadsProps) {
             e.preventDefault();
           }}
           onDrop={async (e) => {
-            e.preventDefault();
             if (v.id === a.at(-1)!.id) return;
-            changeTodoParent(params, Number(e.dataTransfer.getData("dragged-todo-id")), Number(v.id));
+            const dragTodoId = e.dataTransfer.getData("drag-todo-id")
+            changeTodoParent(params, Number(dragTodoId), Number(v.id));
           }}
           href={`/user/${userId}/todos/${a
             .map((v) => v.id)

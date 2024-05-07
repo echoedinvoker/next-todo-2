@@ -1,5 +1,6 @@
 import TodoList from "@/components/TodoList";
 import { db } from "@/db";
+import { sortTodos } from "@/helpers/sort-todos";
 
 export default async function TodoListPage({ params }: { params: { ids: string[] } }) {
   const { ids } = params;
@@ -8,5 +9,7 @@ export default async function TodoListPage({ params }: { params: { ids: string[]
     include: { children: true },
   });
 
-  return <TodoList todos={todos} />;
+  const sortedTodos = await sortTodos(todos);
+
+  return <TodoList todos={sortedTodos} />;
 }

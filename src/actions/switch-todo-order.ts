@@ -4,6 +4,8 @@ import { db } from "@/db";
 import { revalidatePath } from "next/cache";
 
 export async function switchTodoOrder(params: any, dragTodoId: number, dropTodoId: number) {
+  console.log('dragTodoId', dragTodoId)
+  console.log('dropTodoId', dropTodoId)
   const dragTodo = await db.todo.findUnique({
     where: { id: dragTodoId },
     select: { id: true, order: true, updatedAt: true }

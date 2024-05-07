@@ -81,7 +81,6 @@ export default function EditTodoModal({
                 onValueChange={setName}
               />
               <Input
-                autoFocus
                 label="Description (optional)"
                 name="description"
                 placeholder="Enter TODO description"
@@ -90,7 +89,6 @@ export default function EditTodoModal({
                 onValueChange={setDescription}
               />
               <Input
-                autoFocus
                 label="Duration (min, optional)"
                 placeholder="Enter TODO duration"
                 variant="bordered"
@@ -101,7 +99,6 @@ export default function EditTodoModal({
                 color={!isDurationValid ? "danger" : undefined}
               />
               <Input
-                autoFocus
                 label="Elasped (min, optional)"
                 placeholder="Enter TODO elasped"
                 variant="bordered"

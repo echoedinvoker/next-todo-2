@@ -56,14 +56,12 @@ export default function AddTodoModal({
                 variant="bordered"
               />
               <Input
-                autoFocus
                 label="Description (optional)"
                 name="description"
                 placeholder="Enter TODO description"
                 variant="bordered"
               />
               <Input
-                autoFocus
                 label="Duration (min, optional)"
                 placeholder="Enter TODO duration"
                 variant="bordered"

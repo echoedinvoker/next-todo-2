@@ -16,7 +16,7 @@ import { deleteTodo, completeTodo, pauseTodo, playTodo } from "@/actions";
 import { TodoActionsProps } from "@/types";
 import TooltipIconButton from "./TooltipIconButton";
 import { useSession } from "next-auth/react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import AddTodoModal from "./AddTodoModal";
 
 export default function TodoActions({ todo }: TodoActionsProps) {
@@ -30,6 +30,7 @@ export default function TodoActions({ todo }: TodoActionsProps) {
     onOpenChange: onOpenChangeAdd,
   } = useDisclosure();
   const session = useSession();
+  const pathname = usePathname()
   const { userId, ids } = useParams();
   const link = `/user/${session.data?.user?.id}/todos${ids ? `/${(ids as string[]).join("/")}` : ""}`;
 
@@ -55,7 +56,7 @@ export default function TodoActions({ todo }: TodoActionsProps) {
           <TooltipIconButton
             content="Play"
             action={actionPlay}
-            hiddenInputData={[{ name: "id", value: todo.id.toString() }]}
+            hiddenInputData={[{ name: "id", value: todo.id.toString() }, { name: "pathname", value: pathname }]}
           >
             <PlayIcon />
           </TooltipIconButton>

@@ -5,6 +5,7 @@ import { updateParent } from "./update-parent";
 import { revalidatePath } from "next/cache";
 
 export async function changeTodoParent(params: any, id: number, parentId: number | null) {  //only lift up
+  console.log('id', id)
   const todo = await db.todo.findUnique({
     where: { id },
   });
