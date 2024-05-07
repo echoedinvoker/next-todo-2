@@ -12,6 +12,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 import { useFormState } from "react-dom";
 
 export default function AddTodoModal({
@@ -32,6 +33,12 @@ export default function AddTodoModal({
   } = useFormattedTime();
 
   const session = useSession();
+
+  useEffect(() => {
+    if (isOpen) {
+      setDuration("");
+    }
+  }, [isOpen]);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
