@@ -77,7 +77,8 @@ export default function TodoList({
             ? headers.filter((header) => header.key !== "children")
             : headers
           ).map((header) => (
-            <TableColumn key={header.key}>{header.label}</TableColumn>
+            <TableColumn key={header.key}
+              >{header.label}</TableColumn>
           ))}
         </TableHeader>
         <TableBody items={filteredTodos}>

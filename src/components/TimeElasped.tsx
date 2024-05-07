@@ -14,7 +14,7 @@ export default function TimeElapsed({ todo }: { todo: TodoWithChildren }) {
     setCurrentTimestamp(Date.now());
   }, 1000);
 
-  const router = useRouter()
+  const router = useRouter();
 
   if (!currentTimestamp) {
     return null;
@@ -28,12 +28,21 @@ export default function TimeElapsed({ todo }: { todo: TodoWithChildren }) {
   if (inProgressTodoId)
     return (
       <RegularButton
-      onPress={() => {
-        router.push(`/user/${todo.userId}/timer/${inProgressTodoId}`)
-      }}
-      variant="solid" size="md">
+        onPress={() => {
+          router.push(`/user/${todo.userId}/timer/${inProgressTodoId}`);
+        }}
+        variant="solid"
+        size="md"
+        className="text-base font-semibold"
+      >
         {timeFormatter({ milliseconds: totalTimestamp })}
       </RegularButton>
     );
-  return <div>{timeFormatter({ milliseconds: totalTimestamp })}</div>;
+  return (
+    <div className={`text-base font-semibold text-default-500 ${
+todo.status === "completed" ? "line-through" : ""
+}`}>
+      {timeFormatter({ milliseconds: totalTimestamp })}
+    </div>
+  );
 }

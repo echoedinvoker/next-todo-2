@@ -1,12 +1,23 @@
+import Timer from "@/components/Timer";
+import { db } from "@/db";
+
 interface TimerPageProps {
   params: { id: string };
 }
 
-export default function TimerPage({ params }: TimerPageProps) {
+export default async function TimerPage({ params }: TimerPageProps) {
+  const todo = await db.todo.findUnique({
+    where: {
+      id: Number(params.id),
+    },
+    include: {
+      children: true,
+    },
+  });
 
-  return (
-    <div>
-      <h1>Timer for {params.id}</h1>
-    </div>
-  );
+  if (!todo) {
+    return null;
+  }
+
+  return <Timer todo={todo} />;
 }
