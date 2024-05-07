@@ -21,8 +21,6 @@ export default function RenderCell({
   item,
   columnKey,
   isLeaves = false,
-  onUp,
-  onDown,
 }: RenderCellProps) {
   const renderCell = useCallback((todo: TodoWithChildren, columnKey: Key) => {
     const cellValue = todo[columnKey as keyof Todo];
@@ -32,16 +30,6 @@ export default function RenderCell({
       case "title":
         return (
           <div className="flex gap-1 items-center">
-            {isLeaves && (
-              <div className="flex flex-col justify-center">
-                <UpIcon role="button"
-                  onClick={() => onUp && onUp(todo.id)}
-                />
-                <DownIcon role="button"
-                  onClick={() => onDown && onDown(todo.id)}
-                />
-              </div>
-            )}
             <div className="flex flex-col gap-1">
               {isLeaves && (
                 <div>
@@ -90,6 +78,6 @@ export default function RenderCell({
       default:
         return cellValue;
     }
-  }, []);
+  }, [isLeaves]);
   return <>{renderCell(item, columnKey)}</>;
 }

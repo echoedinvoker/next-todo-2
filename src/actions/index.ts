@@ -8,8 +8,5 @@ export { editTodo } from "./edit-todo";
 export { signIn } from "./sign-in";
 export { signOut } from "./sign-out";
 export { switchTodoOrder } from "./switch-todo-order";
-export { switchLeafOrder } from "./switch-leaf-order";
 export { updateParent } from "./update-parent";
 export { getParentTitleAndIds } from "./get-parent-title-and-ids";
-export { switchLeafOrderJumpDown } from "./switch-leaf-order-jump-down";
-export { switchLeafOrderJumpUp } from "./switch-leaf-order-jump-up";

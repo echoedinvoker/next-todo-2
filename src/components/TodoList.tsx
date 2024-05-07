@@ -13,7 +13,9 @@ import { Key, useEffect, useState } from "react";
 import { CustomCheckbox, RenderCell } from "@/components";
 import { TodoWithChildren } from "@/types";
 import { useParams } from "next/navigation";
-import { switchLeafOrderJumpDown, switchLeafOrderJumpUp, switchTodoOrder, switchLeafOrder } from "@/actions";
+import {
+  switchTodoOrder,
+} from "@/actions";
 
 const headers = [
   { key: "title", label: "Title" },
@@ -31,7 +33,9 @@ export default function TodoList({
   todos: TodoWithChildren[];
   isLeaves?: boolean;
 }) {
+  const params = useParams();
   const [groupSelected, setGroupSelected] = useState<string[]>([]);
+
   useEffect(() => {
     const groupSelected = JSON.parse(
       localStorage.getItem(
@@ -39,7 +43,7 @@ export default function TodoList({
       ) ?? "[]",
     );
     setGroupSelected(groupSelected);
-  }, []);
+  }, [isLeaves, setGroupSelected]);
 
   function handleChangedGroupSelected(value: string[]) {
     setGroupSelected(value);
@@ -49,18 +53,10 @@ export default function TodoList({
       localStorage.setItem("todosStatusFilter", JSON.stringify(value));
     }
   }
-  const params = useParams();
   const filteredTodos = todos.filter((todo) => {
     if (groupSelected.length === 0) return true;
     return groupSelected.includes(todo.status);
   });
-
-  async function handleUp(id: number) {
-    await switchLeafOrderJumpUp(params, id, groupSelected);
-  }
-  async function handleDown(id: number) {
-    await switchLeafOrderJumpDown(params, id, groupSelected);
-  }
 
   return (
     <>
@@ -90,20 +86,14 @@ export default function TodoList({
               key={item.id}
               draggable={true}
               onDragStart={(e) => {
-                e.dataTransfer.setData("dragged-todo-id", item.id.toString());
+                e.dataTransfer.setData('drag-todo-id', item.id.toString());
               }}
-              onDragEnd={() => {}}
               onDragOver={(e) => {
                 e.preventDefault();
               }}
-              onDrop={async (e) => {
-                e.preventDefault();
-                const draggingId = e.dataTransfer.getData("dragged-todo-id");
-                if (!isLeaves) {
-                  await switchTodoOrder(params, Number(draggingId), item.id);
-                } else {
-                  await switchLeafOrder(params, Number(draggingId), item.id);
-                }
+              onDrop={(e) => {
+                const dragTodoId = e.dataTransfer.getData('drag-todo-id');
+                switchTodoOrder(params, Number(dragTodoId), item.id);
               }}
             >
               {(columnKey) => (
@@ -112,10 +102,8 @@ export default function TodoList({
                     item={item}
                     columnKey={columnKey as Key}
                     isLeaves={isLeaves}
-                    onUp={handleUp}
-                    onDown={handleDown}
                   />
-               </TableCell>
+                </TableCell>
               )}
             </TableRow>
           )}

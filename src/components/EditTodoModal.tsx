@@ -48,7 +48,7 @@ export default function EditTodoModal({
 
   const disabled = useMemo(() => {
     return !name || !isTimeSpentValid || !isDurationValid;
-  }, [name, isTimeSpentValid]);
+  }, [name, isTimeSpentValid, isDurationValid]);
 
   useEffect(() => {
     isOpen &&
@@ -61,7 +61,7 @@ export default function EditTodoModal({
               : 0),
         }),
       );
-  }, [isOpen]);
+  }, [isOpen, setTimeSpent, todo.timeSpent, todo.status, todo.updatedAt]);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">

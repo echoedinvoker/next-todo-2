@@ -38,7 +38,7 @@ export default function AddTodoModal({
     if (isOpen) {
       setDuration("");
     }
-  }, [isOpen]);
+  }, [isOpen, setDuration]);
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">

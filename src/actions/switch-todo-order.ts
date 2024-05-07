@@ -1,38 +1,39 @@
 "use server";
 
 import { db } from "@/db";
-import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
-export async function switchTodoOrder(params: any, todoIdA: number, todoIdB: number) {
-  const todoA = await db.todo.findUnique({
-    where: { id: todoIdA },
+export async function switchTodoOrder(params: any, dragTodoId: number, dropTodoId: number) {
+  const dragTodo = await db.todo.findUnique({
+    where: { id: dragTodoId },
     select: { id: true, order: true, updatedAt: true }
   });
 
-  const todoB = await db.todo.findUnique({
-    where: { id: todoIdB },
+  const dropTodo = await db.todo.findUnique({
+    where: { id: dropTodoId },
     select: { id: true, order: true, updatedAt: true }
   });
 
-  if (!todoA || !todoB) {
+  if (!dragTodo || !dropTodo) {
     throw new Error("Todos not found");
   }
 
-  const updateDataA: Prisma.TodoUpdateInput = {
-    order: todoB.order,
-    updatedAt: todoA.updatedAt // 保持原有的 updatedAt 值
-  };
+  if (dragTodo.order < dropTodo.order) {
+    await db.todo.update({
+      where: { id: dragTodoId },
+      data: { order: dropTodo.order + 0.5, updatedAt: dragTodo.updatedAt }
+    });
+  } else {
+    await db.todo.update({
+      where: { id: dragTodoId },
+      data: { order: dropTodo.order - 0.5, updatedAt: dragTodo.updatedAt }
+    });
+  }
 
-  const updateDataB: Prisma.TodoUpdateInput = {
-    order: todoA.order,
-    updatedAt: todoB.updatedAt // 保持原有的 updatedAt 值
-  };
-
-  await db.$transaction([
-    db.todo.update({ where: { id: todoIdA }, data: updateDataA }),
-    db.todo.update({ where: { id: todoIdB }, data: updateDataB })
-  ]);
-
-  revalidatePath(`/user/${params.userId}/todos/${params.ids.join("/")}`);
+  if (params.ids) {
+    revalidatePath(`/user/${params.userId}/todos/${params.ids.join("/")}`);
+  } else {
+    revalidatePath(`/user/${params.userId}/todos`);
+  }
+  revalidatePath(`/user/${params.userId}/leaves`);
 }

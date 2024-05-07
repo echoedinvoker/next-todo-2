@@ -1,9 +1,3 @@
-/*
-  Warnings:
-
-  - Added the required column `userId` to the `Todo` table without a default value. This is not possible if the table is not empty.
-
-*/
 -- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL PRIMARY KEY,
@@ -46,9 +40,8 @@ CREATE TABLE "VerificationToken" (
     "expires" DATETIME NOT NULL
 );
 
--- RedefineTables
-PRAGMA foreign_keys=OFF;
-CREATE TABLE "new_Todo" (
+-- CreateTable
+CREATE TABLE "Todo" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "title" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -60,16 +53,10 @@ CREATE TABLE "new_Todo" (
     "parentId" INTEGER,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    "order" INTEGER,
-    "leafOrder" INTEGER,
+    "order" REAL NOT NULL,
     CONSTRAINT "Todo_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "Todo_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Todo" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
-INSERT INTO "new_Todo" ("createdAt", "description", "done", "duration", "id", "leafOrder", "order", "parentId", "status", "timeSpent", "title", "updatedAt") SELECT "createdAt", "description", "done", "duration", "id", "leafOrder", "order", "parentId", "status", "timeSpent", "title", "updatedAt" FROM "Todo";
-DROP TABLE "Todo";
-ALTER TABLE "new_Todo" RENAME TO "Todo";
-PRAGMA foreign_key_check;
-PRAGMA foreign_keys=ON;
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
