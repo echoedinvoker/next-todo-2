@@ -15,7 +15,7 @@ export default function Navigation() {
   const session = useSession()
   const path = usePathname()
 
-  if (path.includes("timer")) return null
+  //if (path.includes("timer")) return null
 
   return (
     <Navbar>

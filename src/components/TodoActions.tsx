@@ -37,13 +37,16 @@ export default function TodoActions({ todo }: TodoActionsProps) {
   return (
     <div className="flex gap-2">
       {todo.children.length === 0 &&
+        !pathname.includes("timer") &&
         todo.status !== "in-progress" &&
         todo.status !== "completed" && (
           <TooltipIconButton content="Add child todo" onPress={onOpenAdd}>
             <AddIcon />
           </TooltipIconButton>
         )}
-      {todo.children.length > 0 && (
+      {
+        !pathname.includes("timer") &&
+        todo.children.length > 0 && (
         <TooltipIconButton
           content="Go to child Todo"
           href={`${link}/${todo.id}`}
@@ -79,9 +82,11 @@ export default function TodoActions({ todo }: TodoActionsProps) {
           <DoneIcon />
         </TooltipIconButton>
       )}
+
+      {!pathname.includes("timer") &&
       <TooltipIconButton content="Edit todo" onPress={onOpen}>
         <EditIcon />
-      </TooltipIconButton>
+      </TooltipIconButton>}
       <TooltipIconButton
         content="Delete todo"
         action={deleteTodo.bind(null, todo.id, userId as string)}

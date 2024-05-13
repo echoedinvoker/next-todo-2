@@ -1,6 +1,7 @@
 import { getParentTitleAndIds } from "@/actions";
 import { TodoList } from "@/components";
 import { db } from "@/db";
+import { sortTodos } from "@/helpers/sort-todos";
 import { TodoWithChildren } from "@/types";
 
 
@@ -19,25 +20,11 @@ export default async function leavesPage({ params }: LeavesPageProps) {
     leaf.parentList = await getParentTitleAndIds(leaf.parentId);
   }
 
-  await sortLeaves(leaves);
+  await sortTodos(leaves);
 
   return (
     <div className="flex flex-col justify-center py-2 gap-2">
     <TodoList todos={leaves} isLeaves />
     </div>
   );
-}
-
-async function sortLeaves(leaves: TodoWithChildren[]) {
-  // sort by order
-  leaves.sort((a, b) => {
-    return a.order - b.order;
-  });
-  // reset value of order from 1
-  for (let i = 0; i < leaves.length; i++) {
-    await db.todo.update({
-      where: { id: leaves[i].id },
-      data: { order: i + 1 },
-    });
-  }
 }

@@ -25,7 +25,9 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18",
     "react-draggable": "^4.4.6",
-    "react-use": "^17.5.0"
+    "react-timer-hook": "^3.0.7",
+    "react-use": "^17.5.0",
+    "styled-components": "^6.1.11"
   },
   "devDependencies": {
     "@types/d3": "^7.4.3",
