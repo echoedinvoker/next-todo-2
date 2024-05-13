@@ -18,7 +18,7 @@ export default function Navigation() {
   //if (path.includes("timer")) return null
 
   return (
-    <Navbar>
+    <Navbar className="hidden sm:flex">
       <NavbarBrand>
         <AcmeLogo />
         <p className="font-bold text-inherit">ACME</p>
