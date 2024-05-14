@@ -13,7 +13,7 @@ import {
   SleepIcon,
 } from "./icons";
 import EditTodoModal from "./EditTodoModal";
-import { deleteTodo, completeTodo, pauseTodo, playTodo } from "@/actions";
+import { deleteTodo, completeTodo, pauseTodo, playTodo, pendingTodo } from "@/actions";
 import { TodoActionsProps } from "@/types";
 import TooltipIconButton from "./TooltipIconButton";
 import { useSession } from "next-auth/react";
@@ -24,6 +24,7 @@ export default function TodoActions({ todo }: TodoActionsProps) {
   const [_1, actionComplete] = useFormState(completeTodo, { message: "" });
   const [_2, actionPlay] = useFormState(playTodo, { message: "" });
   const [_3, actionPause] = useFormState(pauseTodo, { message: "" });
+  const [_4, actionPending] = useFormState(pendingTodo, { message: "" });
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     isOpen: isOpenAdd,
@@ -97,7 +98,8 @@ export default function TodoActions({ todo }: TodoActionsProps) {
       {todo.children.length === 0 && todo.status === "not-started" && (
         <TooltipIconButton
           content="Pending for later"
-          action={deleteTodo.bind(null, todo.id, userId as string)}
+          hiddenInputData={[{ name: "id", value: todo.id.toString() }]}
+          action={actionPending}
         >
           <SleepIcon />
         </TooltipIconButton>
