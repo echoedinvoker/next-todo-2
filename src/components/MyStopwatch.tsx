@@ -128,7 +128,7 @@ export default function MyStopwatch({ todos }: { todos: TodoWithChildren[] }) {
           <TooltipIconButton
             onPress={() => {
             const expiryTimestamp = new Date();
-            expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 10);
+            expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + ExiryTimeSeconds);
             restart(expiryTimestamp);
             setExpired(false);
             setRestTimes((prev) => prev + 1);
