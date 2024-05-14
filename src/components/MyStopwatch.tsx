@@ -7,11 +7,10 @@ import { timestampCollector } from "@/helpers";
 import { TodoWithChildren } from "@/types";
 import TodoActions from "./TodoActions";
 import { CircleRightIcon, SleepIcon } from "./icons";
-import {
-  Button,
-} from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { useTimer } from "react-timer-hook";
 import TooltipIconButton from "./TooltipIconButton";
+import Link from "next/link";
 
 const ExiryTimeSeconds = 300;
 
@@ -47,7 +46,9 @@ export default function MyStopwatch({ todos }: { todos: TodoWithChildren[] }) {
       setTimerStatus("stopwatch");
     } else {
       const expiryTimestamp = new Date();
-      expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + ExiryTimeSeconds);
+      expiryTimestamp.setSeconds(
+        expiryTimestamp.getSeconds() + ExiryTimeSeconds,
+      );
       restart(expiryTimestamp);
       setExpired(false);
       setTimerStatus("timer");
@@ -59,7 +60,7 @@ export default function MyStopwatch({ todos }: { todos: TodoWithChildren[] }) {
     if (index !== -1) {
       setIndex(index);
     }
-    setRestTimes(0)
+    setRestTimes(0);
   }, [todos]);
 
   const [currentTimestamp, setCurrentTimestamp] = useState<number | null>(null);
@@ -99,7 +100,15 @@ export default function MyStopwatch({ todos }: { todos: TodoWithChildren[] }) {
           >
             <CircleRightIcon />
           </Button>
-          <div className="flex items-center justify-center w-full overflow-auto">
+          <div className="flex flex-col items-center justify-center w-full overflow-auto">
+            {todos[index].parentList.length > 0 && (
+              <Link
+                className="text-xs text-default-500 border-default border-2 rounded-full px-2 py-1 hover:bg-default-500 hover:text-white"
+                href={`/user/${todos[index].userId}/todos/${todos[index].parentList.map((list: any) => list.id).join("/")}`}
+              >
+                {todos[index].parentList.at(-1).title}
+              </Link>
+            )}
             <h2 className="text-center text-xl font-semibold my-4 w-full">
               {todos[index].title}
             </h2>
@@ -123,17 +132,23 @@ export default function MyStopwatch({ todos }: { todos: TodoWithChildren[] }) {
           />
         )}
         <div className="flex gap-2">
-        <TodoActions todo={todos[index]} />
-          {timerStatus === 'timer' && expired && (
-          <TooltipIconButton
-            onPress={() => {
-            const expiryTimestamp = new Date();
-            expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + ExiryTimeSeconds);
-            restart(expiryTimestamp);
-            setExpired(false);
-            setRestTimes((prev) => prev + 1);
-          }} content="Restart timer"><SleepIcon /></TooltipIconButton>
-        )}
+          <TodoActions todo={todos[index]} />
+          {timerStatus === "timer" && expired && (
+            <TooltipIconButton
+              onPress={() => {
+                const expiryTimestamp = new Date();
+                expiryTimestamp.setSeconds(
+                  expiryTimestamp.getSeconds() + ExiryTimeSeconds,
+                );
+                restart(expiryTimestamp);
+                setExpired(false);
+                setRestTimes((prev) => prev + 1);
+              }}
+              content="Restart timer"
+            >
+              <SleepIcon />
+            </TooltipIconButton>
+          )}
         </div>
         {timerStatus === "timer" && restTimes > 0 && (
           <p className="text-sm text-gray-500 mt-2">Rest times: {restTimes}</p>
