@@ -10,6 +10,7 @@ import {
   DoneIcon,
   EditIcon,
   DeleteIcon,
+  SleepIcon,
 } from "./icons";
 import EditTodoModal from "./EditTodoModal";
 import { deleteTodo, completeTodo, pauseTodo, playTodo } from "@/actions";
@@ -93,6 +94,14 @@ export default function TodoActions({ todo }: TodoActionsProps) {
       >
         <DeleteIcon />
       </TooltipIconButton>
+      {todo.children.length === 0 && todo.status === "not-started" && (
+        <TooltipIconButton
+          content="Pending for later"
+          action={deleteTodo.bind(null, todo.id, userId as string)}
+        >
+          <SleepIcon />
+        </TooltipIconButton>
+      )}
       <EditTodoModal isOpen={isOpen} onOpenChange={onOpenChange} todo={todo} />
       <AddTodoModal
         isOpen={isOpenAdd}

@@ -15,6 +15,8 @@ export default async function leavesPage({ params }: LeavesPageProps) {
     include: { children: true },
  });
   const leaves = todos.filter((todo) => todo.children.length === 0)
+    .filter((todo) => todo.status !== "completed")
+    .filter((todo) => todo.status !== "pending");
 
   for (const leaf of leaves) {
     leaf.parentList = await getParentTitleAndIds(leaf.parentId);
