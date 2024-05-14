@@ -95,7 +95,7 @@ export default function TodoActions({ todo }: TodoActionsProps) {
       >
         <DeleteIcon />
       </TooltipIconButton>
-      {todo.children.length === 0 && todo.status === "not-started" && (
+      {todo.children.length === 0 && ["not-started", "pending"].includes(todo.status) && (
         <TooltipIconButton
           content="Pending for later"
           hiddenInputData={[{ name: "id", value: todo.id.toString() }]}
