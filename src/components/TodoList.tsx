@@ -70,6 +70,7 @@ export default function TodoList({
         <CustomCheckbox value="in-progress">IN-PROGRESS</CustomCheckbox>
         <CustomCheckbox value="pause">PAUSE</CustomCheckbox>
         <CustomCheckbox value="completed">COMPLETED</CustomCheckbox>
+        <CustomCheckbox value="pending">PENDING</CustomCheckbox>
       </CheckboxGroup>
       <Table aria-label="Todos">
         <TableHeader>
