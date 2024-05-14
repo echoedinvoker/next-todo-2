@@ -8,7 +8,9 @@ export default async function TimerPage() {
       children: true,
     },
   });
-  const leaves = todos.filter((todo) => todo.children.length === 0).filter((todo) => todo.status !== "completed")
+  const leaves = todos.filter((todo) => todo.children.length === 0)
+    .filter((todo) => todo.status !== "completed")
+    .filter((todo) => todo.status !== "pending");
   await sortTodos(leaves);
   leaves.sort((a) => { return a.status === "in-progress" ? -1 : 1 });
 
