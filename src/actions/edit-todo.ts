@@ -9,11 +9,9 @@ export async function editTodo(formState: { message: string }, formData: FormDat
   const title = formData.get("title") as string
   const description = formData.get("description") as string
   const duration = formData.get("duration")
-  const timeSpent = formData.get("timeSpent")
   const oldTimeSpent = formData.get("oldTimeSpent") as string
 
   const data: any = { title, description }
-  if (timeSpent) { data.timeSpent = Number(timeSpent) }
   if (duration) { data.duration = Number(duration) }
 
   const updatedTodo = await db.todo.update({ where: { id: Number(id) }, data })

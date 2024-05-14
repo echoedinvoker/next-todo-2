@@ -98,16 +98,6 @@ export default function EditTodoModal({
                 errorMessage={!isDurationValid && "Invalid duration format"}
                 color={!isDurationValid ? "danger" : undefined}
               />
-              <Input
-                label="Elasped (min, optional)"
-                placeholder="Enter TODO elasped"
-                variant="bordered"
-                value={timeSpent}
-                onValueChange={setTimeSpent}
-                isInvalid={!isTimeSpentValid}
-                errorMessage={!isTimeSpentValid && "Invalid time spent format"}
-                color={!isTimeSpentValid ? "danger" : undefined}
-              />
               <input name="id" type="hidden" value={todo.id} />
               <input name="oldTimeSpent" type="hidden" value={todo.timeSpent} />
               {durationTimestamp !== null  && !isNaN(durationTimestamp) && (
