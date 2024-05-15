@@ -100,13 +100,13 @@ export default function TodoList({
               }}
             >
               {(columnKey) => (
-                <FormTableCell>
+                <TableCell>
                   <RenderCell
                     item={item}
                     columnKey={columnKey as Key}
                     isLeaves={isLeaves}
                   />
-                </FormTableCell>
+                </TableCell>
               )}
             </TableRow>
           )}
