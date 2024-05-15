@@ -16,7 +16,6 @@ import { useParams } from "next/navigation";
 import {
   switchTodoOrder,
 } from "@/actions";
-import FormTableCell from "./FormTableCell";
 
 const headers = [
   { key: "title", label: "Title" },
