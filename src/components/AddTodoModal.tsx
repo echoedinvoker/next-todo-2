@@ -14,6 +14,7 @@ import {
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
+import FormButton from "./common/FormButton";
 
 export default function AddTodoModal({
   isOpen,
@@ -89,9 +90,9 @@ export default function AddTodoModal({
               <Button color="danger" variant="flat" onPress={onClose}>
                 Close
               </Button>
-              <Button color="primary" onPress={onClose} type="submit">
+              <FormButton color="primary" type="submit" onPress={onClose}>
                 Add TODO
-              </Button>
+              </FormButton>
             </ModalFooter>
           </form>
         )}
