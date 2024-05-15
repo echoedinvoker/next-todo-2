@@ -1,5 +1,6 @@
 import { Button, Tooltip } from "@nextui-org/react";
 import Link from "next/link";
+import FormButton from "./common/FormButton";
 
 interface TooltipIconButtonProps {
   children: React.ReactNode;
@@ -28,21 +29,16 @@ export default function TooltipIconButton({
             {hiddenInputData?.map(({ name, value }) => (
               <input key={name} type="hidden" name={name} value={value} />
             ))}
-            <Button type="submit" {...props}
-              isIconOnly>
+            <FormButton {...props} isIconOnly>
               {children}
-            </Button>
+            </FormButton>
           </form>
         ) : href ? (
-          <Button href={href} as={Link}
-              {...props}
-              isIconOnly>
+          <Button href={href} as={Link} {...props} isIconOnly>
             {children}
-          </Button> 
+          </Button>
         ) : (
-          <Button onClick={onPress}
-              {...props}
-                isIconOnly>
+          <Button onClick={onPress} {...props} isIconOnly>
             {children}
           </Button>
         )}
