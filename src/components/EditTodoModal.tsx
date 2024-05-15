@@ -15,6 +15,7 @@ import {
 } from "@nextui-org/react";
 import { useEffect, useMemo, useState } from "react";
 import { useFormState } from "react-dom";
+import FormButton from "./common/FormButton";
 
 interface EditTodoModalProps {
   isOpen: boolean;
@@ -119,14 +120,9 @@ export default function EditTodoModal({
               <Button color="danger" variant="flat" onPress={onClose}>
                 Close
               </Button>
-              <Button
-                color="primary"
-                onPress={onClose}
-                type="submit"
-                isDisabled={disabled}
-              >
+              <FormButton color="primary" type="submit" onPress={onClose} isDisabled={disabled}>
                 Edit TODO
-              </Button>
+              </FormButton>
             </ModalFooter>
           </form>
         )}

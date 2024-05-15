@@ -16,6 +16,7 @@ import { useParams } from "next/navigation";
 import {
   switchTodoOrder,
 } from "@/actions";
+import FormTableCell from "./FormTableCell";
 
 const headers = [
   { key: "title", label: "Title" },
@@ -99,13 +100,13 @@ export default function TodoList({
               }}
             >
               {(columnKey) => (
-                <TableCell>
+                <FormTableCell>
                   <RenderCell
                     item={item}
                     columnKey={columnKey as Key}
                     isLeaves={isLeaves}
                   />
-                </TableCell>
+                </FormTableCell>
               )}
             </TableRow>
           )}
