@@ -32,8 +32,10 @@ export async function addTodo(_: null, formData: FormData) {
   } else {
     data.order = 1;
   }
+  console.log('data.order', data.order);
 
-  await db.todo.create({ data });
+  const todo = await db.todo.create({ data });
+  console.log('todo', todo);
 
   if (parentId) {
     const parentList = await updateParent({ parentId: Number(parentId) });

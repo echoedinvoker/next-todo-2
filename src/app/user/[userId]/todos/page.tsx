@@ -1,18 +1,17 @@
 import { auth } from "@/auth";
 import { TodoList, TodoMenu } from "@/components";
 import Breads from "@/components/Breads";
-import { db } from "@/db";
 import { sortTodos } from "@/helpers/sort-todos";
 
 export default async function TodoListPage() {
   const session = await auth();
 
-  const todos = await db.todo.findMany({
-    where: { parentId: null },
-    include: { children: true },
-  });
+  if (!session || !session.user) {
+    return null;
+  }
 
-  const sortedTodos = await sortTodos(todos);
+  const sortedTodos = await sortTodos(session.user?.id)
+  const todos = sortedTodos.filter((todo) => todo.parentId === null);
 
   return (
     <div className="flex flex-col justify-center py-2 gap-2">
@@ -20,7 +19,7 @@ export default async function TodoListPage() {
         <TodoMenu />
         <Breads userId={session?.user?.id ?? ""} ids={[]} />
       </div>
-      <TodoList todos={sortedTodos} />
+      <TodoList todos={todos} />
     </div>
   );
 }

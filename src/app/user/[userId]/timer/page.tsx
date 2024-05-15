@@ -4,16 +4,15 @@ import { db } from "@/db";
 import { sortTodos } from "@/helpers/sort-todos";
 import { TodoWithChildren } from "@/types";
 
-export default async function TimerPage() {
-  const todos = await db.todo.findMany({
-    include: {
-      children: true,
-    },
-  });
+interface TimerPageProps {
+  params: { userId: string };
+}
+
+export default async function TimerPage({ params }: TimerPageProps) {
+  const todos = await sortTodos(params.userId);
   const leaves = todos.filter((todo) => todo.children.length === 0)
     .filter((todo) => todo.status !== "completed")
     .filter((todo) => todo.status !== "pending") as TodoWithChildren[];
-  await sortTodos(leaves);
   leaves.sort((a) => { return a.status === "in-progress" ? -1 : 1 });
 
   for (const leaf of leaves) {
