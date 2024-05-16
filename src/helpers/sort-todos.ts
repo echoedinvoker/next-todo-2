@@ -4,7 +4,7 @@ import { TodoWithChildren } from "@/types";
 export async function sortTodos(userId: string) {
   const todos = await db.todo.findMany({
     where: { userId },
-    select: { id: true, order: true },
+    select: { id: true, order: true, updatedAt: true },
   });
 
   todos.sort((a, b) => {
@@ -15,7 +15,7 @@ export async function sortTodos(userId: string) {
     todos.map(async (todo, i) => {
       const sortedTodo = await db.todo.update({
         where: { id: todo.id },
-        data: { order: i + 1 },
+        data: { order: i + 1, updatedAt: todo.updatedAt },
         include: { children: true },
       });
       return sortedTodo;
