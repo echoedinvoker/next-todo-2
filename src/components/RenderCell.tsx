@@ -42,8 +42,11 @@ export default function RenderCell({
                     )}
                   </div>
                 )}
-                <div className={`text-md font-semibold text-default-500 ${todo.status === "completed" ? "line-through" : ""}`}
-                >{cellValue as any}</div>
+                <div
+                  className={`text-md font-semibold text-default-500 ${todo.status === "completed" ? "line-through" : ""}`}
+                >
+                  {cellValue as any}
+                </div>
               </div>
             </div>
           );
@@ -69,15 +72,22 @@ export default function RenderCell({
           );
 
         case "duration":
-          return todo.duration ? (
-            <div
-              className={`text-base font-semibold text-default-500 ${todo.status === "completed" ? "line-through" : ""}`}
-            >
-              {timeFormatter({ milliseconds: todo.duration })}{" "}
-            </div>
-          ) : (
-            null
-          );
+          if (todo.children.length === 0) {
+            return todo.duration ? (
+              <div
+                className={`text-base font-semibold text-default-500 ${todo.status === "completed" ? "line-through" : ""}`}
+              >
+                {timeFormatter({ milliseconds: todo.duration })}{" "}
+              </div>
+            ) : null;
+          }
+          return <div className="flex flex-col gap-1 text-xs text-default-500">
+            {todo.totalCompletedDuration && <div
+              className="font-semibold"
+            >{`Completed Duration: ${todo.totalCompletedDuration}`}</div>}
+            {todo.totalArchivedDuration && <div>{`Archived Duration: ${todo.totalArchivedDuration}`}</div>}
+            {todo.totalDuration && <div>{`Total Duration: ${todo.totalDuration}`}</div>}
+          </div>;
         case "actions":
           return <TodoActions todo={todo} />;
         case "timeSpent":
@@ -88,13 +98,15 @@ export default function RenderCell({
             const completed = todo.children.filter(
               (child) => child.status === "completed",
             ).length;
-            return <div
-              className={`text-base font-semibold text-default-500 ${todo.status === "completed" ? "line-through" : ""}`}
-            >
-            {`${completed}/${todo.children.length}`}
-            </div>
+            return (
+              <div
+                className={`text-base font-semibold text-default-500 ${todo.status === "completed" ? "line-through" : ""}`}
+              >
+                {`${completed}/${todo.children.length}`}
+              </div>
+            );
           }
-          return null
+          return null;
 
         default:
           return cellValue;
