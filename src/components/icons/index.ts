@@ -12,3 +12,4 @@ export { UpIcon } from "./UpIcon";
 export { DownIcon } from "./DownIcon";
 export { CircleRightIcon } from "./CircleRightIcon";
 export { SleepIcon } from "./SleepIcon";
+export { ArchiveIcon } from "./ArchiveIcon";

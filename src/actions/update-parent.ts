@@ -70,7 +70,8 @@ function getStatus(todo: TodoWithChildren) {
     return "not-started";
   }
 
-  if (todo.children.every((child) => child.status === "completed")) return "completed";
+  if (todo.children.every((child) => child.status === "archived")) return "archived";
+  if (todo.children.every((child) => ["completed", "archived"].includes(child.status))) return "completed";
   if (todo.children.some((child) => child.status === "in-progress")) return "in-progress";
   if (todo.timeSpent) return "pause";
   return "not-started";

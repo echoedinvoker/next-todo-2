@@ -11,7 +11,7 @@ interface TodoListPageProps {
 export default async function TodoListPage({ params }: TodoListPageProps) {
   const sortedTodos = await sortTodos(params.userId);
   const { ids } = params;
-  const todos = sortedTodos.filter((todo) => todo.parentId === Number(ids.at(-1)!));
+  const todos = sortedTodos.filter((todo) => todo.parentId === Number(ids.at(-1)!)).filter((todo) => todo.status !== "archived");
 
   return <TodoList todos={todos} />;
 }

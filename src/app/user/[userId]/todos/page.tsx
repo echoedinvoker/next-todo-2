@@ -11,7 +11,7 @@ export default async function TodoListPage() {
   }
 
   const sortedTodos = await sortTodos(session.user?.id)
-  const todos = sortedTodos.filter((todo) => todo.parentId === null);
+  const todos = sortedTodos.filter((todo) => todo.parentId === null).filter((todo) => todo.status !== "archived");
 
   return (
     <div className="flex flex-col justify-center py-2 gap-2">

@@ -11,6 +11,7 @@ import {
   EditIcon,
   DeleteIcon,
   SleepIcon,
+  ArchiveIcon,
 } from "./icons";
 import EditTodoModal from "./EditTodoModal";
 import { deleteTodo, completeTodo, pauseTodo, playTodo, pendingTodo } from "@/actions";
@@ -19,6 +20,7 @@ import TooltipIconButton from "./TooltipIconButton";
 import { useSession } from "next-auth/react";
 import { useParams, usePathname } from "next/navigation";
 import AddTodoModal from "./AddTodoModal";
+import { archiveTodo } from "@/actions/archive-todo";
 
 export default function TodoActions({ todo }: TodoActionsProps) {
   const [_1, actionComplete] = useFormState(completeTodo, { message: "" });
@@ -102,6 +104,15 @@ export default function TodoActions({ todo }: TodoActionsProps) {
           action={actionPending}
         >
           <SleepIcon />
+        </TooltipIconButton>
+      )}
+      {todo.children.length === 0 && todo.status === "completed" && (
+        <TooltipIconButton
+          content="Archive"
+          action={archiveTodo}
+          hiddenInputData={[{ name: "id", value: todo.id.toString() }]}
+        >
+          <ArchiveIcon />
         </TooltipIconButton>
       )}
       <EditTodoModal isOpen={isOpen} onOpenChange={onOpenChange} todo={todo} />

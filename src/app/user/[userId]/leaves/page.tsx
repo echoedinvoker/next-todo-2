@@ -8,7 +8,7 @@ interface LeavesPageProps {
 
 export default async function leavesPage({ params }: LeavesPageProps) {
   const todos = await sortTodos(params.userId);
-  const leaves = todos.filter((todo) => todo.children.length === 0);
+  const leaves = todos.filter((todo) => todo.children.length === 0).filter((todo) => todo.status !== "archived");
   for (const leaf of leaves) {
     leaf.parentList = await getParentTitleAndIds(leaf.parentId);
   }
