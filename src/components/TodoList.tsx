@@ -69,7 +69,7 @@ export default function TodoList({
           return acc + (todo.status === "completed" ? 1 : 0);
         },
         0,
-      )}/${todos.length}`}</div>
+      )}/${todos.filter(todo => todo.status !== "pending").length}`}</div>
       <div>{`Completed/Total Duration: ${timeFormatter({
         milliseconds: todos.reduce(
           (acc, todo) => {
@@ -78,7 +78,7 @@ export default function TodoList({
           0,
         ),
       })}/${timeFormatter({
-        milliseconds: todos.reduce((acc, todo) => acc + (todo.duration ?? 0), 0),
+        milliseconds: todos.filter(todo => todo.status !== "pending").reduce((acc, todo) => acc + (todo.duration ?? 0), 0),
       })}`}
 
       </div>
