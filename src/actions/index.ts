@@ -11,3 +11,4 @@ export { switchTodoOrder } from "./switch-todo-order";
 export { updateParent } from "./update-parent";
 export { getParentTitleAndIds } from "./get-parent-title-and-ids";
 export { pendingTodo } from "./pending-todo";
+export { archiveAllCompletedTodos } from "./archive-all-completed-todo";
