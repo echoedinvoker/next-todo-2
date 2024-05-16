@@ -13,6 +13,7 @@ import { Key, useEffect, useState } from "react";
 import { CustomCheckbox, RenderCell } from "@/components";
 import { TodoWithChildren } from "@/types";
 import { useParams } from "next/navigation";
+import { timeFormatter } from "@/helpers/time-formatter";
 import {
   switchTodoOrder,
 } from "@/actions";
@@ -60,6 +61,29 @@ export default function TodoList({
 
   return (
     <>
+      {isLeaves && (
+        <div className="mb-4">
+      <div>{`Total Elasped Time: ${timeFormatter({ milliseconds: todos.reduce((acc, todo) => acc + todo.timeSpent, 0)})}`}</div>
+      <div>{`Completed/Total Entries: ${todos.reduce(
+        (acc, todo) => {
+          return acc + (todo.status === "completed" ? 1 : 0);
+        },
+        0,
+      )}/${todos.length}`}</div>
+      <div>{`Completed/Total Duration: ${timeFormatter({
+        milliseconds: todos.reduce(
+          (acc, todo) => {
+            return acc + (todo.status === "completed" ? (todo.duration ?? 0) : 0);
+          },
+          0,
+        ),
+      })}/${timeFormatter({
+        milliseconds: todos.reduce((acc, todo) => acc + (todo.duration ?? 0), 0),
+      })}`}
+
+      </div>
+      </div>
+      )}
       <CheckboxGroup
         className="gap-1"
         orientation="horizontal"
