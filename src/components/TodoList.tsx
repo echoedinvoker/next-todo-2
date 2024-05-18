@@ -103,6 +103,7 @@ export default function TodoList({
         <CustomCheckbox value="pause">PAUSE</CustomCheckbox>
         <CustomCheckbox value="completed">COMPLETED</CustomCheckbox>
         <CustomCheckbox value="pending">PENDING</CustomCheckbox>
+        {!isLeaves && <CustomCheckbox value="archived">ARCHIVED</CustomCheckbox>}
       </CheckboxGroup>
       <Table aria-label="Todos">
         <TableHeader>

@@ -13,7 +13,7 @@ export default async function TodoListPage({ params }: TodoListPageProps) {
   const sortedTodos = await sortTodos(params.userId);
   const leaves = sortedTodos.filter((todo) => todo.children.length === 0);
   const { ids } = params;
-  const todos = sortedTodos.filter((todo) => todo.parentId === Number(ids.at(-1)!)).filter((todo) => todo.status !== "archived");
+  const todos = sortedTodos.filter((todo) => todo.parentId === Number(ids.at(-1)!))
   const todosWithDuration = todos.map((todo) => {
     const totalDuration = leaves.reduce((acc: any, leaf: any) => {
       if (checkParent(sortedTodos, todo, leaf)) {

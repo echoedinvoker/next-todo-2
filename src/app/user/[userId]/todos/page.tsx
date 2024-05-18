@@ -14,7 +14,7 @@ export default async function TodoListPage() {
   const sortedTodos = await sortTodos(session.user?.id)
   const leaves = sortedTodos.filter((todo) => todo.children.length === 0);
 
-  const todos = sortedTodos.filter((todo) => todo.parentId === null).filter((todo) => todo.status !== "archived");
+  const todos = sortedTodos.filter((todo) => todo.parentId === null)
 
   const todosWithDuration = todos.map((todo) => {
     const totalDuration = leaves.reduce((acc: any, leaf: any) => {
