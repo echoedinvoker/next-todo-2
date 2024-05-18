@@ -98,11 +98,14 @@ export default function RenderCell({
             const completed = todo.children.filter(
               (child) => child.status === "completed",
             ).length;
+            const archived = todo.children.filter(
+              (child) => child.status === "archived",
+            ).length;
             return (
               <div
                 className={`text-base font-semibold text-default-500 ${todo.status === "completed" ? "line-through" : ""}`}
               >
-                {`${completed}/${todo.children.length}`}
+                {`${completed}/${archived}/${todo.children.length}`}
               </div>
             );
           }
